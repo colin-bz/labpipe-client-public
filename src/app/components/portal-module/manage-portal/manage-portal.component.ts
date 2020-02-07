@@ -34,9 +34,9 @@ export class ManagePortalComponent implements OnInit {
   formTemplateForm: FormGroup;
   reportTemplateForm: FormGroup;
 
-  @ViewChild('aosvc', {static: false}) aosvc: MultipleSelectComponent;
-  @ViewChild('aorvc', {static: false}) aorvc: MultipleSelectComponent;
-  @ViewChild('aoegvc', {static: false}) aoegvc: MultipleSelectComponent;
+  @ViewChild('aosvc') aosvc: MultipleSelectComponent;
+  @ViewChild('aorvc') aorvc: MultipleSelectComponent;
+  @ViewChild('aoegvc') aoegvc: MultipleSelectComponent;
 
   studies: Study[] = [];
   roles: Role[] = [];

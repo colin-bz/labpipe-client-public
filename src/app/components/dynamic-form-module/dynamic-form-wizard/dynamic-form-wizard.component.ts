@@ -41,7 +41,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   isFormVisible: boolean;
   result: any;
   formData: any;
-  @ViewChild('formDataPreview', {static: false}) formDataPreview: DynamicFormResultPreviewComponent;
+  @ViewChild('formDataPreview') formDataPreview: DynamicFormResultPreviewComponent;
 
   showNotSavedWarning: boolean;
   showMultipleFormCodeDialog: boolean;
