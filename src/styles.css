@@ -7,3 +7,6 @@
 .clarity-blue {
   color: #0065AB;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

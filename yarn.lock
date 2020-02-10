@@ -202,6 +202,11 @@
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-9.0.0.tgz#24ba63ae5db566b70f7c40bb148dc37a77aaa373"
   integrity sha512-tOMtXY8DFpTWMF77BOTXZmMMtqvdy6fbyOkJSccn6VatcPrNXOs5rKur+KNwdSlK+djjss6Y+LA8fQAvjNvUqw==
 
+"@angular/material@^9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-9.0.0.tgz#655bfd4d4047337e84480b9f92be8e81af375b92"
+  integrity sha512-QxN2rmR5mvg2YE1NoIGWLpbnmcJq0iFidzy6odzvN17+XkoCJBZ65IdYsHrJgfwGpoIy6bywuixrDHHcSh9I5w==
+
 "@angular/platform-browser-dynamic@^9.0.0":
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-9.0.0.tgz#1b87355c20d0b2a046c1914085701a3d5ced52da"
@@ -1150,12 +1155,10 @@
     rxjs "6.5.3"
     webpack-sources "1.4.3"
 
-"@ngx-pwa/local-storage@^8.2.3":
-  version "8.2.3"
-  resolved "https://registry.yarnpkg.com/@ngx-pwa/local-storage/-/local-storage-8.2.3.tgz#d8c388e878a54e036ebf97365d62faf1223408aa"
-  integrity sha512-ri6q9fGl8YdI+EmKCm/ku2TiqwexG6wmSJNiWbObLNvB8SJysnhfB894rX18G85MydZJXVelhYPl1qASj6DJLQ==
-  dependencies:
-    tslib "^1.9.0"
+"@ngx-pwa/local-storage@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@ngx-pwa/local-storage/-/local-storage-9.0.2.tgz#05dccda3611cb3bc89a4f9862cbe57288152fb19"
+  integrity sha512-pfgBnNsNsBAX4N0hnfzmXhefj0TdWRVlh+W/9wsUdQHk+4CzPJsH9yD5Y5kqIKQ36xebCZVvImLg2OmsW5ZdHg==
 
 "@schematics/angular@9.0.1":
   version "9.0.1"
