@@ -10,6 +10,7 @@ import {InputQuestion} from '../../../models/dynamic-form-models/question-input'
 import {FileQuestion} from '../../../models/dynamic-form-models/question-file';
 import {TemporaryDataService} from '../../../services/temporary-data.service';
 import {min} from 'rxjs/operators';
+import {UploadFile} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-dynamic-form-question',
@@ -24,6 +25,7 @@ export class DynamicFormQuestionComponent implements OnInit {
 
   options: any[] = [];
   inputPattern = null;
+  fileList: UploadFile[] = [];
   fileFilter: FileFilter[] = [{ name: 'All Files', extensions: ['*'] }];
   // tslint:disable-next-line:max-line-length
   fileInputProperties: ('openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory')[] = ['openFile'];
@@ -97,6 +99,10 @@ export class DynamicFormQuestionComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  handleSelectedFile() {
+    console.log(this.fileList);
   }
 
   addFile() {

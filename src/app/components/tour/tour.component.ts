@@ -19,11 +19,11 @@ export class TourComponent implements OnInit {
 
   getIntroOptions() {
     switch (this.tour) {
-      case 'login':
+      case 'login-page':
         return {
           steps: [
             {
-              intro: 'You are now at the login page.'
+              intro: 'You are now at the login-page page.'
             },
             {
               element: '#tour-select-location',
@@ -35,15 +35,15 @@ export class TourComponent implements OnInit {
             },
             {
               element: '#tour-user-id',
-              intro: 'Please enter your allocated username for login.'
+              intro: 'Please enter your allocated username for login-page.'
             },
             {
               element: '#tour-user-password',
               intro: 'Please enter your password.'
             },
             {
-              element: '#tour-confirm-login',
-              intro: 'Once you have completed all fields above, the login button will be enabled for you to continue.'
+              element: '#tour-confirm-login-page',
+              intro: 'Once you have completed all fields above, the login-page button will be enabled for you to continue.'
             }
           ]
         };

@@ -46,7 +46,7 @@ export class PrepareLaunchComponent implements OnInit {
             console.log(error);
           },
           () => {
-            this.router.navigate(['login']);
+            this.router.navigate(['login-page']);
           }
         );
       });

@@ -1,9 +1,15 @@
-<form class="clr-form clr-form-vertical" [formGroup]="studyForm">
-  <clr-select-container id="tour-select-study">
-    <label>Study</label>
-    <select clrSelect name="select-study" formControlName="study" required>
-      <option *ngFor="let s of projects$" [ngValue]="s">{{s.name}}</option>
-    </select>
-  </clr-select-container>
-  <button class="btn btn-primary mt-2" *ngIf="studyForm.valid" (click)="showDataCollectionForm()">Start</button>
+<form nz-form [formGroup]="studyForm">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="study"><strong>Study</strong></nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-select id="study" nzShowSearch nzAllowClear nzPlaceHolder="Study" formControlName="study" required>
+        <nz-option *ngFor="let s of projects$" nzLabel="{{s.name}}" [nzValue]="s"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <button nz-button nzType="primary" [disabled]="!studyForm.valid" (click)="showDataCollectionForm()">Start</button>
+    </nz-form-control>
+  </nz-form-item>
 </form>

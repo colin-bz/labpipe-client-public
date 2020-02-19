@@ -1,61 +1,51 @@
-<div [formGroup]="form" class="clr-form clr-form-vertical">
-  <div [ngSwitch]="qBase.controlType">
-
-    <div *ngSwitchCase="'input'">
-      <clr-input-container *ngIf="qBase.type != 'datetime-local' else datetime">
-        <label>{{qBase.label}}</label>
-        <input clrInput [type]="qBase.type" [formControlName]="qBase.key" [id]="qBase.key" [pattern]="inputPattern" [required]="qBase.required" />
-        <clr-control-helper>{{qBase.helperText}}</clr-control-helper>
-      </clr-input-container>
+<ng-container [formGroup]="form">
+  <ng-container [ngSwitch]="qBase.controlType">
+    <ng-container *ngSwitchCase="'input'">
+      <nz-form-item *ngIf="qBase.type != 'datetime-local' else datetime">
+        <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
+        <nz-form-control [nzSpan]="14">
+          <input [id]="qBase.key" [type]="qBase.type" nz-input [formControlName]="qBase.key" [pattern]="inputPattern" [required]="qBase.required"/>
+        </nz-form-control>
+      </nz-form-item>
       <ng-template #datetime>
-        <div class="clr-form-control">
-          <label class="clr-control-label">{{qBase.label}}</label>
-          <div class="clr-control-container">
-            <input clrInput [type]="qBase.type" [formControlName]="qBase.key" [id]="qBase.key" [pattern]="inputPattern" [required]="qBase.required" />
-            <button class="btn btn-sm btn-primary" (click)="setNow(form, qBase.key)">now</button>
-          </div>
-          <clr-control-helper>{{qBase.helperText}}</clr-control-helper>
-        </div></ng-template>
-    </div>
-
-    <clr-select-container *ngSwitchCase="'select'">
-      <label>{{qBase.label}}</label>
-      <select clrSelect [id]="qBase.key" [formControlName]="qBase.key" [required]="qBase.required">
-        <option *ngFor="let opt of options" [ngValue]="opt.value">{{opt.name}}</option>
-      </select>
-      <clr-control-helper>{{qBase.helperText}}</clr-control-helper>
-    </clr-select-container>
-
-    <clr-radio-container *ngSwitchCase="'truefalse'" clrInline>
-      <label>{{qBase.label}}</label>
-      <clr-radio-wrapper>
-        <input type="radio" clrRadio [formControlName]="qBase.key" [required]="qBase.required" [value]="true"/>
-        <label>Yes</label>
-      </clr-radio-wrapper>
-      <clr-radio-wrapper>
-        <input type="radio" clrRadio [formControlName]="qBase.key" [required]="qBase.required" [value]="false"/>
-        <label>No</label>
-      </clr-radio-wrapper>
-      <clr-control-helper>{{qBase.helperText}}</clr-control-helper>
-    </clr-radio-container>
+        <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
+        <nz-form-control [nzSpan]="14">
+          <nz-time-picker [id]="qBase.key" [nzFormat]="'HH:mm'" [formControlName]="qBase.key" [required]="qBase.required"></nz-time-picker>
+          <button nz-button nzType="default" (click)="setNow(form, qBase.key)">Now</button>
+        </nz-form-control>
+      </ng-template>
+    </ng-container>
+    <nz-form-item *ngSwitchCase="'select'">
+      <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-select [id]="qBase.key" nzShowSearch nzAllowClear [formControlName]="qBase.key" required>
+          <nz-option *ngFor="let opt of options" nzLabel="{{opt.name}}" [nzValue]="opt.value"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngSwitchCase="'truefalse'">
+      <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-switch [id]="qBase.key"  [formControlName]="qBase.key" nzCheckedChildren="Yes" nzUnCheckedChildren="No"></nz-switch>
+      </nz-form-control>
+    </nz-form-item>
 
     <div *ngSwitchCase="'file'">
-      <div class="clr-form-control">
-        <label class="clr-control-label">{{qBase.label}}</label>
-        <div class="clr-control-container">
-          <button class="btn btn-primary" (click)="addFile()">Browse</button>
-        </div>
-        <clr-control-helper>{{qBase.helperText}}</clr-control-helper>
-      </div>
-      <clr-datagrid *ngIf="form.get(qBase.key).value && form.get(qBase.key).value.length > 0">
-        <clr-dg-column>File</clr-dg-column>
-
-        <clr-dg-row *ngFor="let file of this.form.get(qBase.key).value">
-          <clr-dg-cell>{{file | filename:"base"}}</clr-dg-cell>
-        </clr-dg-row>
-
-        <clr-dg-footer>{{this.form.get(qBase.key).value.length}} files</clr-dg-footer>
-      </clr-datagrid>
+      <nz-form-item *ngSwitchCase="'truefalse'">
+        <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
+        <nz-form-control [nzSpan]="14">
+          <nz-upload [(nzFileList)]="fileList">
+          <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
+        </nz-upload>
+          <button
+            nz-button
+            [nzType]="'primary'"
+            (click)="handleSelectedFile()"
+            [disabled]="fileList.length == 0"
+            style="margin-top: 16px"
+          > Confirm selected </button>
+        </nz-form-control>
+      </nz-form-item>
     </div>
-  </div>
-</div>
+  </ng-container>
+</ng-container>

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {UserSettingsService} from '../../../services/user-settings.service';
+import {UserSettingsService} from '../../services/user-settings.service';
 import {ElectronService} from 'ngx-electron';
-import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {TemporaryDataService} from '../../services/temporary-data.service';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 
 @Component({
@@ -24,10 +25,10 @@ export class LoginPageComponent implements OnInit {
   appVersion: string;
 
   confirmLoginDialogOpened = false;
-  incorrectLoginDialogOpened = false;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
+              private nzNotification: NzNotificationService,
               private us: UserSettingsService,
               private es: ElectronService,
               private tds: TemporaryDataService) {
@@ -64,7 +65,7 @@ export class LoginPageComponent implements OnInit {
       if (valid) {
         this.confirmLoginDialogOpened = true;
       } else {
-        this.incorrectLoginDialogOpened = true;
+        this.loginFail();
       }
 
     }
@@ -94,8 +95,12 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
-  onRetry() {
-    this.incorrectLoginDialogOpened = false;
+  loginFail() {
+    this.nzNotification.create(
+        'error',
+        'Login unsuccessful',
+        'You have entered incorrect user ID or password.'
+    );
   }
 
   compareFn(c1: any, c2: any): boolean {
