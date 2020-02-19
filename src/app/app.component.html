@@ -1,8 +1,18 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div class="main-container">
-  <app-connection-monitor></app-connection-monitor>
-  <app-top-navigation></app-top-navigation>
-  <div class="mx-2 my-2">
-    <router-outlet></router-outlet>
-  </div>
-</div>
+<!--<div class="main-container">-->
+<!--  <app-connection-monitor></app-connection-monitor>-->
+<!--  <div class="mx-2 my-2">-->
+<!--    <router-outlet></router-outlet>-->
+<!--  </div>-->
+<!--</div>-->
+
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzWidth="200px">
+    <app-top-navigation [isCollapsed]="isCollapsed"></app-top-navigation>
+  </nz-sider>
+  <nz-layout>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer>Footer</nz-footer>
+  </nz-layout>
+</nz-layout>

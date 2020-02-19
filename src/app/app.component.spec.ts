@@ -1,7 +1,7 @@
 import {async, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {ConnectionMonitorComponent} from './components/monitor-module/connection-monitor/connection-monitor.component';
-import {TopNavigationComponent} from './components/navigation-module/top-navigation/top-navigation.component';
+import {TopNavigationComponent} from './components/navigation-sidebar-left/top-navigation.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ClarityModule} from '@clr/angular';
 import {ElectronService} from 'ngx-electron';

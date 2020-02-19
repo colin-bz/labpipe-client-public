@@ -29,6 +29,8 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   instrument: any;
   study: any;
 
+  currentStep = 0;
+
   messages: InAppMessage[] = [];
   formMessages: InAppMessage[] = [];
 
@@ -180,6 +182,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
       this.isFormReady = true;
       this.iaas.success('Form preparation completed.', this.messages);
       this.isFormVisible = true;
+      console.log(this.currentStep);
     }
   }
 
@@ -250,4 +253,19 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
     this.router.navigate(['tasks']);
   }
 
+  stepBack() {
+
+  }
+
+  stepNext() {
+
+  }
+
+  stepDone() {
+
+  }
+
+  onStepChange(step: number) {
+    this.currentStep = step;
+  }
 }

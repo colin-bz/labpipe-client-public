@@ -1,0 +1,36 @@
+<ng-container>
+  <div class="logo"><img (click)="onBrandClick()" src="assets/images/labpipe-logo-white.png" width="100%" alt=""></div>
+  <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <li nz-menu-item *ngIf="currentUser" (click)="toTasks()">
+      <i nz-icon nzType="project"></i>
+      <span>Projects</span>
+    </li>
+    <li nz-menu-item *ngIf="currentUser" (click)="toBrowse()">
+      <i nz-icon nzType="database"></i>
+      <span>Browse Data</span>
+    </li>
+    <li nz-menu-item *ngIf="currentUser" (click)="toManage()">
+      <i nz-icon nzType="crown"></i>
+      <span>Manage</span>
+    </li>
+    <li nz-menu-item *ngIf="currentUser" >
+      <nz-divider></nz-divider>
+    </li>
+    <li nz-menu-item (click)="toSettings()">
+      <i nz-icon nzType="setting"></i>
+      <span>Settings</span>
+    </li>
+    <li nz-menu-item (click)="reload()">
+      <i nz-icon nzType="reload"></i>
+      <span>Reload</span>
+    </li>
+    <li nz-menu-item *ngIf="currentUser" (click)="toProfile()">
+      <i nz-icon nzType="user"></i>
+      <span>{{currentUser.name}}</span>
+    </li>
+    <li nz-menu-item *ngIf="currentUser" (click)="logout()">
+      <i nz-icon nzType="logout"></i>
+      <span>Logout</span>
+    </li>
+  </ul>
+</ng-container>

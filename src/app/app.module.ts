@@ -13,9 +13,9 @@ import {FreshStartupComponent} from './components/startup-module/fresh-startup/f
 import {PrepareLaunchComponent} from './components/startup-module/prepare-launch/prepare-launch.component';
 import {ConnectionMonitorComponent} from './components/monitor-module/connection-monitor/connection-monitor.component';
 import {TaskPortalComponent} from './components/portal-module/task-portal/task-portal.component';
-import {TopNavigationComponent} from './components/navigation-module/top-navigation/top-navigation.component';
+import {TopNavigationComponent} from './components/navigation-sidebar-left/top-navigation.component';
 import {ElectronService} from 'ngx-electron';
-import {LoginPageComponent} from './components/authentication-module/login/login-page.component';
+import {LoginPageComponent} from './components/login-page/login-page.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -30,6 +30,11 @@ import { TourComponent } from './components/tour/tour.component';
 import { MultipleSelectComponent } from './components/multiple-select/multiple-select.component';
 import { MultipleInputComponent } from './components/multiple-input/multiple-input.component';
 import { ProfilePortalComponent } from './components/portal-module/profile-portal/profile-portal.component';
+import { NgZorroAntdModule, NZ_I18N, en_GB } from 'ng-zorro-antd';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
@@ -63,9 +68,10 @@ import { ProfilePortalComponent } from './components/portal-module/profile-porta
     BrowserAnimationsModule,
     AppRoutingModule,
     ClarityModule, ClrIconModule,
-    StorageModule.forRoot({IDBNoWrap: true})
+    StorageModule.forRoot({IDBNoWrap: true}),
+    NgZorroAntdModule
   ],
-  providers: [ElectronService],
+  providers: [ElectronService, { provide: NZ_I18N, useValue: en_GB }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
