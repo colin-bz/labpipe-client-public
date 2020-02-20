@@ -21,79 +21,79 @@
         <button nz-button nzType="default" (click)="stepBack()" *ngIf="currentStep > 0">
           <span>Previous</span>
         </button>
-        <button nz-button nzType="default" (click)="stepNext()" *ngIf="currentStep < wizardTemplate.pages.length">
+        <button nz-button nzType="default" (click)="stepNext()" *ngIf="currentStep < wizardTemplate.pages.length"  [disabled]="!wizardTemplate.pages[currentStep].pageForm.valid">
           <span>Next</span>
         </button>
-        <button nz-button nzType="primary" (click)="stepDone()" *ngIf="currentStep === wizardTemplate.pages.length">
+        <button nz-button nzType="primary" (click)="stepDone()" *ngIf="currentStep === wizardTemplate.pages.length" [disabled]="!wizardTemplate.pages[currentStep].pageForm.valid">
           <span>Done</span>
         </button>
       </div>
-            <clr-wizard #wizard [(clrWizardOpen)]="isFormVisible" (clrWizardOnFinish)="onWizardFinish()">
-              <clr-wizard-title>{{wizardTemplate.title}}</clr-wizard-title>
+<!--            <clr-wizard #wizard [(clrWizardOpen)]="isFormVisible" (clrWizardOnFinish)="onWizardFinish()">-->
+<!--              <clr-wizard-title>{{wizardTemplate.title}}</clr-wizard-title>-->
 
-              <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
-              <clr-wizard-button type="previous">Back</clr-wizard-button>
-              <clr-wizard-button type="next">Next</clr-wizard-button>
-              <clr-wizard-button type="finish">Finish</clr-wizard-button>
+<!--              <clr-wizard-button type="cancel">Cancel</clr-wizard-button>-->
+<!--              <clr-wizard-button type="previous">Back</clr-wizard-button>-->
+<!--              <clr-wizard-button type="next">Next</clr-wizard-button>-->
+<!--              <clr-wizard-button type="finish">Finish</clr-wizard-button>-->
 
-              <div *ngFor="let wizardPage of wizardTemplate.pages">
-                <clr-wizard-page
-                  [clrWizardPageNextDisabled]="wizardPage.requireValidForm ? !wizardPage.pageForm.valid : null">
-                  <ng-template clrPageTitle>{{wizardPage.title}}</ng-template>
-                  <ng-template clrPageNavTitle>{{wizardPage.navTitle}}</ng-template>
-                  <app-in-app-alert [messages]="formMessages"></app-in-app-alert>
-                  <form *ngIf="isFormVisible"
-                        [formGroup]="wizardPage.pageForm" class="clr-form clr-form-vertical">
-                    <div *ngFor="let question of wizardPage.questions" class="form-row">
-                      <app-dynamic-form-question [form]="wizardPage.pageForm" [qBase]="question"
-                                                 (qValue)="onQuestionValue(wizardPage, question.key, $event)"></app-dynamic-form-question>
-                    </div>
-                  </form>
-                  <clr-datagrid *ngIf="wizardPage.formValidProcess.length > 0">
-                    <clr-dg-column>Process</clr-dg-column>
-                    <clr-dg-column>New field</clr-dg-column>
-                    <clr-dg-column>Result</clr-dg-column>
-                    <clr-dg-column></clr-dg-column>
+<!--              <div *ngFor="let wizardPage of wizardTemplate.pages">-->
+<!--                <clr-wizard-page-->
+<!--                  [clrWizardPageNextDisabled]="wizardPage.requireValidForm ? !wizardPage.pageForm.valid : null">-->
+<!--                  <ng-template clrPageTitle>{{wizardPage.title}}</ng-template>-->
+<!--                  <ng-template clrPageNavTitle>{{wizardPage.navTitle}}</ng-template>-->
+<!--                  <app-in-app-alert [messages]="formMessages"></app-in-app-alert>-->
+<!--                  <form *ngIf="isFormVisible"-->
+<!--                        [formGroup]="wizardPage.pageForm" class="clr-form clr-form-vertical">-->
+<!--                    <div *ngFor="let question of wizardPage.questions" class="form-row">-->
+<!--                      <app-dynamic-form-question [form]="wizardPage.pageForm" [qBase]="question"-->
+<!--                                                 (qValue)="onQuestionValue(wizardPage, question.key, $event)"></app-dynamic-form-question>-->
+<!--                    </div>-->
+<!--                  </form>-->
+<!--                  <clr-datagrid *ngIf="wizardPage.formValidProcess.length > 0">-->
+<!--                    <clr-dg-column>Process</clr-dg-column>-->
+<!--                    <clr-dg-column>New field</clr-dg-column>-->
+<!--                    <clr-dg-column>Result</clr-dg-column>-->
+<!--                    <clr-dg-column></clr-dg-column>-->
 
-                    <clr-dg-row *ngFor="let process of wizardPage.formValidProcess; let i = index">
-                      <clr-dg-cell>{{process.processType}}</clr-dg-cell>
-                      <clr-dg-cell>{{process.newField}}</clr-dg-cell>
-                      <clr-dg-cell>
-                        <div [ngSwitch]="process.processType">
-                          <div *ngSwitchDefault>
-                            {{process.result}}
-                          </div>
-                          <div *ngSwitchCase="'file-copy'">
-                        <span *ngIf="process.result">
-                        {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} copied
-                        </span>
-                          </div>
-                          <div *ngSwitchCase="'file-rename'">
-                        <span *ngIf="process.result">
-                        {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} renamed
-                        </span>
-                          </div>
-                          <div *ngSwitchCase="'folder-watch'">
-                        <span *ngIf="process.result">
-                        {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} detected
-                        </span>
-                          </div>
-                        </div>
-                      </clr-dg-cell>
-                      <clr-dg-cell>
-                        <button class="btn btn-sm btn-primary" *ngIf="!process.auto"
-                                (click)="activateProcess(wizardPage, process, i)">Activate
-                        </button>
-                        <button class="btn btn-sm btn-primary" *ngIf="process.allowCopy && process.result"
-                                (click)="clipboardCopy(process.result)">Copy
-                        </button>
-                      </clr-dg-cell>
-                    </clr-dg-row>
-                    <clr-dg-footer>{{wizardPage.formValidProcess.length}} processes</clr-dg-footer>
-                  </clr-datagrid>
-                </clr-wizard-page>
-              </div>
-            </clr-wizard>
+<!--                    <clr-dg-row *ngFor="let process of wizardPage.formValidProcess; let i = index">-->
+<!--                      <clr-dg-cell>{{process.processType}}</clr-dg-cell>-->
+<!--                      <clr-dg-cell>{{process.newField}}</clr-dg-cell>-->
+<!--                      <clr-dg-cell>-->
+<!--                        <div [ngSwitch]="process.processType">-->
+<!--                          <div *ngSwitchDefault>-->
+<!--                            {{process.result}}-->
+<!--                          </div>-->
+<!--                          <div *ngSwitchCase="'file-copy'">-->
+<!--                        <span *ngIf="process.result">-->
+<!--                        {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} copied-->
+<!--                        </span>-->
+<!--                          </div>-->
+<!--                          <div *ngSwitchCase="'file-rename'">-->
+<!--                        <span *ngIf="process.result">-->
+<!--                        {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} renamed-->
+<!--                        </span>-->
+<!--                          </div>-->
+<!--                          <div *ngSwitchCase="'folder-watch'">-->
+<!--                        <span *ngIf="process.result">-->
+<!--                        {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} detected-->
+<!--                        </span>-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </clr-dg-cell>-->
+<!--                      <clr-dg-cell>-->
+<!--                        <button class="btn btn-sm btn-primary" *ngIf="!process.auto"-->
+<!--                                (click)="activateProcess(wizardPage, process, i)">Activate-->
+<!--                        </button>-->
+<!--                        <button class="btn btn-sm btn-primary" *ngIf="process.allowCopy && process.result"-->
+<!--                                (click)="clipboardCopy(process.result)">Copy-->
+<!--                        </button>-->
+<!--                      </clr-dg-cell>-->
+<!--                    </clr-dg-row>-->
+<!--                    <clr-dg-footer>{{wizardPage.formValidProcess.length}} processes</clr-dg-footer>-->
+<!--                  </clr-datagrid>-->
+<!--                </clr-wizard-page>-->
+<!--              </div>-->
+<!--            </clr-wizard>-->
     </ng-container>
   </nz-spin>
   <div *ngIf="result" class="form-row">

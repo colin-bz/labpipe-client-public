@@ -195,6 +195,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
     updatedValue[controlKey] = questionValue;
     parentPage.pageForm.patchValue(updatedValue, {emitEvent: false});
     this.onFormValid(parentPage);
+    console.log(parentPage.pageForm.value);
   }
 
   onFormValid(parentPage: WizardPage) {
@@ -254,11 +255,11 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   }
 
   stepBack() {
-
+    this.currentStep -= 1;
   }
 
   stepNext() {
-
+    this.currentStep += 1;
   }
 
   stepDone() {
@@ -267,5 +268,6 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
 
   onStepChange(step: number) {
     this.currentStep = step;
+    console.log(this.currentStep);
   }
 }
