@@ -4,15 +4,20 @@
       <nz-form-item *ngIf="qBase.type != 'datetime-local' else datetime">
         <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
         <nz-form-control [nzSpan]="14">
-          <input [id]="qBase.key" [type]="qBase.type" nz-input [formControlName]="qBase.key" [pattern]="inputPattern" [required]="qBase.required"/>
+          <input [id]="qBase.key" [type]="qBase.type" nz-input [formControlName]="qBase.key" [pattern]="inputPattern"
+                 [required]="qBase.required"/>
         </nz-form-control>
       </nz-form-item>
       <ng-template #datetime>
-        <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
-        <nz-form-control [nzSpan]="14">
-          <nz-time-picker [id]="qBase.key" [nzFormat]="'HH:mm'" [formControlName]="qBase.key" [required]="qBase.required"></nz-time-picker>
-          <button nz-button nzType="default" (click)="setNow(form, qBase.key)">Now</button>
-        </nz-form-control>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <nz-time-picker [id]="qBase.key" [nzFormat]="'HH:mm'" [ngModel]="selectedDateTime" [ngModelOptions]="{standalone: true}"
+                            (ngModelChange)="setTime()"
+                            [required]="qBase.required"></nz-time-picker>
+            <button nz-button nzType="default" (click)="setNow()">Now</button>
+          </nz-form-control>
+        </nz-form-item>
       </ng-template>
     </ng-container>
     <nz-form-item *ngSwitchCase="'select'">
@@ -26,26 +31,26 @@
     <nz-form-item *ngSwitchCase="'truefalse'">
       <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
       <nz-form-control [nzSpan]="14">
-        <nz-switch [id]="qBase.key"  [formControlName]="qBase.key" nzCheckedChildren="Yes" nzUnCheckedChildren="No"></nz-switch>
+        <nz-switch [id]="qBase.key" [formControlName]="qBase.key" nzCheckedChildren="Yes"
+                   nzUnCheckedChildren="No"></nz-switch>
       </nz-form-control>
     </nz-form-item>
 
-    <div *ngSwitchCase="'file'">
-      <nz-form-item *ngSwitchCase="'truefalse'">
+      <nz-form-item *ngSwitchCase="'file'">
         <nz-form-label [nzSpan]="6" [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
         <nz-form-control [nzSpan]="14">
-          <nz-upload [(nzFileList)]="fileList">
-          <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
-        </nz-upload>
+          <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeConfirmFile">
+            <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
+          </nz-upload>
           <button
             nz-button
             [nzType]="'primary'"
             (click)="handleSelectedFile()"
             [disabled]="fileList.length == 0"
             style="margin-top: 16px"
-          > Confirm selected </button>
+          > Confirm selected
+          </button>
         </nz-form-control>
       </nz-form-item>
-    </div>
   </ng-container>
 </ng-container>

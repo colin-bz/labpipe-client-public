@@ -9,8 +9,8 @@ import {SelectQuestion} from '../../../models/dynamic-form-models/question-selec
 import {InputQuestion} from '../../../models/dynamic-form-models/question-input';
 import {FileQuestion} from '../../../models/dynamic-form-models/question-file';
 import {TemporaryDataService} from '../../../services/temporary-data.service';
-import {min} from 'rxjs/operators';
 import {UploadFile} from 'ng-zorro-antd';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dynamic-form-question',
@@ -22,6 +22,7 @@ export class DynamicFormQuestionComponent implements OnInit {
   @Input() qBase: QuestionBase<any>;
   @Input() form: FormGroup;
   @Output() qValue = new EventEmitter<any>();
+  selectedDateTime: Date;
 
   options: any[] = [];
   inputPattern = null;
@@ -119,16 +120,19 @@ export class DynamicFormQuestionComponent implements OnInit {
     });
   }
 
-  setNow(form: FormGroup, field) {
-    const date = new Date();
-    const year = date.getFullYear();
-    const m = date.getMonth() + 1;
-    const month = m > 9 ? m : `0${m}`;
-    const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
-    const hour = date.getHours() > 9 ? date.getHours() : `0${date.getHours()}`;
-    const minute = date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes()}`;
-    const value = `${year}-${month}-${day}T${hour}:${minute}`;
-    form.get(field).setValue(value);
+  beforeConfirmFile = (file: UploadFile): boolean => {
+    this.fileList = this.fileList.concat(file);
+    return false;
+  };
+
+  setTime() {
+    const dateString = moment(this.selectedDateTime).format('YYYY-MM-DDTHH:mm');
+    this.form.get(this.qBase.key).setValue(dateString);
+  }
+
+  setNow() {
+    this.selectedDateTime = new Date();
+    this.setTime();
   }
 
 }
