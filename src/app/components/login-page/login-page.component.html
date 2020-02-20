@@ -1,48 +1,49 @@
 <div class="fullheight">
-  <div nz-row>
-  <div nz-col nzSpan="20" nzOffset="4">
-    <img src="assets/images/labpipe-logo-light.png" alt="LabPipe Logo">
+  <div nz-row nzType="flex" nzJustify="center">
+      <img nz-col nzSpan="20" src="assets/images/labpipe-logo-light.png" alt="LabPipe Logo">
+  </div>
+  <div nz-row nzType="flex" nzJustify="center">
+    <form nz-form [formGroup]="loginForm" nzLayout="vertical" nz-col nzSpan="20">
+      <nz-form-item>
+        <nz-form-label nzFor="location"><strong>Location</strong></nz-form-label>
+        <nz-form-control>
+          <nz-select id="location" nzShowSearch nzAllowClear nzPlaceHolder="Location" formControlName="location"
+                     [compareWith]="compareFn" required>
+            <nz-option *ngFor="let l of locations$" nzLabel="{{l.name}}" [nzValue]="l"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="instrument"><strong>Instrument</strong></nz-form-label>
+        <nz-form-control>
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Instrument" formControlName="instrument"
+                     [compareWith]="compareFn" required>
+            <nz-option *ngFor="let i of instruments$" nzLabel="{{i.name}}" [nzValue]="i"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="userid"><strong>User ID</strong></nz-form-label>
+        <nz-form-control>
+          <input id="userid" type="text" nz-input formControlName="operator" placeholder="User ID"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="password"><strong>Password</strong></nz-form-label>
+        <nz-form-control>
+          <input id="password" type="password" nz-input formControlName="password" placeholder="Password"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" [disabled]="!loginForm.valid" (click)="onSubmit()">Sign in</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
   </div>
 </div>
-  <form nz-form [formGroup]="loginForm">
-    <nz-form-item>
-      <nz-form-label [nzSpan]="6" nzFor="location"><strong>Location</strong></nz-form-label>
-      <nz-form-control [nzSpan]="14">
-        <nz-select id="location" nzShowSearch nzAllowClear nzPlaceHolder="Location" formControlName="location"
-                   [compareWith]="compareFn" required>
-          <nz-option *ngFor="let l of locations$" nzLabel="{{l.name}}" [nzValue]="l"></nz-option>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="6" nzFor="instrument"><strong>Instrument</strong></nz-form-label>
-      <nz-form-control [nzSpan]="14">
-        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Instrument" formControlName="instrument"
-                   [compareWith]="compareFn" required>
-          <nz-option *ngFor="let i of instruments$" nzLabel="{{i.name}}" [nzValue]="i"></nz-option>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="6" nzFor="userid"><strong>User ID</strong></nz-form-label>
-      <nz-form-control [nzSpan]="14">
-        <input id="userid" type="text" nz-input formControlName="operator" placeholder="User ID"/>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="6" nzFor="password"><strong>Password</strong></nz-form-label>
-      <nz-form-control [nzSpan]="14">
-        <input id="password" type="password" nz-input formControlName="password" placeholder="Password"/>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-control [nzSpan]="14" [nzOffset]="6">
-        <button nz-button nzType="primary" [disabled]="!loginForm.valid" (click)="onSubmit()">Sign in</button>
-      </nz-form-control>
-    </nz-form-item>
-  </form>
-</div>
-<nz-modal [(nzVisible)]="confirmLoginDialogOpened" nzTitle="Confirm your details" [nzClosable]="false" (nzOnCancel)="onConfirm(false)"
+<nz-modal [(nzVisible)]="confirmLoginDialogOpened" nzTitle="Confirm your details" [nzClosable]="false"
+          (nzOnCancel)="onConfirm(false)"
           (nzOnOk)="onConfirm(true)">
   <p>Are you sure you want to continue?</p>
   <dl class="clr-row">

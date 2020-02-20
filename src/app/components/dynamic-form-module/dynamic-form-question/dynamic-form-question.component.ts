@@ -104,6 +104,8 @@ export class DynamicFormQuestionComponent implements OnInit {
 
   handleSelectedFile() {
     console.log(this.fileList);
+    const filePaths = this.fileList.map(f => f.path);
+    this.form.controls[this.qBase.key].setValue(filePaths);
   }
 
   addFile() {

@@ -267,6 +267,10 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   }
 
   onStepChange(step: number) {
+
+    if (this.wizardTemplate.pages[this.currentStep].pageForm.valid) {
+
+    }
     this.currentStep = step;
     console.log(this.currentStep);
   }
