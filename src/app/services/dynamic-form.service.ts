@@ -5,11 +5,9 @@ import {FormValidProcess, WizardPage} from '../models/dynamic-form-models/wizard
 import {ElectronService} from 'ngx-electron';
 import {UserSettingsService} from './user-settings.service';
 import * as _ from 'lodash';
-import {InAppAlertService, InAppMessage} from './in-app-alert.service';
 import {LabPipeService} from './lab-pipe.service';
-import {map} from 'rxjs/operators';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {DatabaseService} from './database.service';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +21,8 @@ export class DynamicFormService {
               private es: ElectronService,
               private uss: UserSettingsService,
               private lps: LabPipeService,
-              private ds: DatabaseService,
-              private iaas: InAppAlertService) {
+              private nzNotification: NzNotificationService,
+              private ds: DatabaseService) {
     this.path = this.es.remote.require('path');
     this.fs = this.es.remote.require('fs-extra');
     this.chokidar = this.es.remote.require('chokidar');
@@ -45,8 +43,7 @@ export class DynamicFormService {
                          process: FormValidProcess,
                          processIndex: number,
                          parentPage: WizardPage,
-                         formData: any,
-                         messages?: InAppMessage[]) {
+                         formData: any) {
     switch (process.processType) {
       case 'concat':
         this.concat(process, processIndex, parentPage, formData);
@@ -61,7 +58,7 @@ export class DynamicFormService {
         this.fileUpload(process, processIndex, parentPage, formData, identifier);
         break;
       case 'folder-watch':
-        this.folderWatch(process, processIndex, parentPage, formData, messages);
+        this.folderWatch(process, processIndex, parentPage, formData);
         break;
       case 'check-duplicate':
         this.duplicateCheck(process, processIndex, parentPage, formData);
@@ -181,7 +178,7 @@ export class DynamicFormService {
     }
   }
 
-  folderWatch(process: FormValidProcess, processIndex: number, parentPage: WizardPage, formData: any, messages?: InAppMessage[]) {
+  folderWatch(process: FormValidProcess, processIndex: number, parentPage: WizardPage, formData: any) {
     const params = _.cloneDeep(process.parameters);
     if (params.length === 4) {
       if (params[0].startsWith('::')) {
@@ -207,7 +204,7 @@ export class DynamicFormService {
         const files = [];
         watcher
           .on('ready', () =>
-            this.iaas.success(`File watcher instance ready`, messages))
+            this.nzNotification.success('Success', 'File watcher instance ready'))
           .on('add', path => {
             console.log(`[${path}] added.`);
             files.push(this.path.resolve(path));
@@ -216,13 +213,13 @@ export class DynamicFormService {
               if (process.newField) {
                 formData[parentPage.key][process.newField] = parentPage.formValidProcess[processIndex].result;
               }
-              this.iaas.info(`File watcher reached expected number of files.`, messages);
+              this.nzNotification.info('File watcher', 'File watcher reached expected number of files.');
               watcher.close();
             }
           });
         if (periodWatching > 0) {
           setTimeout(() => {
-            this.iaas.info(`File watcher reached waiting time limit`, messages);
+            this.nzNotification.info('File watcher', 'File watcher reached waiting time limit.');
             if (!process.result && files) {
               process.result = files;
               if (process.newField) {

@@ -15,8 +15,8 @@ import {SelectQuestion} from '../../../models/dynamic-form-models/question-selec
 import {TrueFalseQuestion} from '../../../models/dynamic-form-models/question-truefalse';
 import {FileQuestion} from '../../../models/dynamic-form-models/question-file';
 import {LabPipeService} from '../../../services/lab-pipe.service';
-import {InAppAlertService, InAppMessage} from '../../../services/in-app-alert.service';
 import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-dynamic-form-wizard',
@@ -30,9 +30,6 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   study: any;
 
   currentStep = 0;
-
-  messages: InAppMessage[] = [];
-  formMessages: InAppMessage[] = [];
 
   formCode: string;
   formTemplates: any;
@@ -60,7 +57,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
               private es: ElectronService,
               private lps: LabPipeService,
               private tds: TemporaryDataService,
-              private iaas: InAppAlertService,
+              private nzNotification: NzNotificationService,
               private zone: NgZone,
               private http: HttpClient,
               private router: Router) {
@@ -96,7 +93,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
         console.log(error);
-        this.iaas.warn('Unable to getParameter form from server. Trying local forms.', this.messages);
+        this.nzNotification.warning('Warning', 'Unable to getParameter form from server. Trying local forms.');
         this.formTemplates = this.us.getForm(this.study.identifier, this.instrument.identifier);
         switch (this.formTemplates.length) {
           case 0:
@@ -117,12 +114,12 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
     if (this.formCode) {
       this.showMultipleFormCodeDialog = false;
       this.lps.getFormWithIdentifier(this.formCode).subscribe((data: any) => {
-        this.iaas.success('Form loaded. Preparation in progress.', this.messages);
-        this.us.setForm(data);
-        this.prepareForm(data);
+          this.nzNotification.success('Success', 'Form loaded. Preparation in progress.');
+          this.us.setForm(data);
+          this.prepareForm(data);
         },
         error => {
-          this.iaas.warn('Unable to getParameter form from server. Trying local forms.', this.messages);
+          this.nzNotification.warning('Warning', 'Unable to getParameter form from server. Trying local forms.');
           const data = this.us.getFormWithIdentifier(this.formCode);
           if (data) {
             this.prepareForm(data);
@@ -142,7 +139,8 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
       formIdentifier: data.identifier,
       studyIdentifier: data.studyIdentifier,
       instrumentIdentifier: data.instrumentIdentifier,
-      record: {}};
+      record: {}
+    };
     this.remoteUrl = data.url;
     this.wizardTemplate = new Wizard({title: data.template.title, pages: []});
     data.template.pages.forEach(page => {
@@ -180,7 +178,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
       this.wizardTemplate.pages.forEach((page, index) =>
         this.wizardTemplate.pages[index].pageForm = this.dfs.toFormGroup(page.questions));
       this.isFormReady = true;
-      this.iaas.success('Form preparation completed.', this.messages);
+      this.nzNotification.success('Success', 'Form preparation completed.');
       this.isFormVisible = true;
       console.log(this.currentStep);
     }
@@ -211,7 +209,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   }
 
   activateProcess(parentPage: WizardPage, process: FormValidProcess, processIndex: number) {
-    this.dfs.formValidProcessTriage(this.actionIdentifier, process, processIndex, parentPage, this.formData.record, this.formMessages);
+    this.dfs.formValidProcessTriage(this.actionIdentifier, process, processIndex, parentPage, this.formData.record);
   }
 
   onWizardFinish() {
@@ -232,10 +230,10 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
       this.sentToServer = true;
       this.lps.postRecord(this.remoteUrl, record)
         .subscribe((data: any) => {
-            this.iaas.success(data.message, this.messages);
+            this.nzNotification.success('Success', data.message);
           },
           (error: any) => {
-            this.iaas.error(error.error.message, this.messages);
+            this.nzNotification.success('Error', error.error.message);
           });
     } else {
       this.sentToServer = false;
@@ -245,6 +243,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
 
   clipboardCopy(value: any) {
     this.es.clipboard.writeText(value);
+    this.nzNotification.info('Copied to clipboard', value as string);
   }
 
   toPortal() {
@@ -263,7 +262,9 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   }
 
   stepDone() {
-
+    this.result = this.formData;
+    this.formDataPreview.updateResult();
+    this.showNotSavedWarning = true;
   }
 
   onStepChange(step: number) {

@@ -1,15 +1,17 @@
-<clr-datagrid>
-  <clr-dg-column>Form</clr-dg-column>
-  <clr-dg-column>Field</clr-dg-column>
-  <clr-dg-column>Value</clr-dg-column>
-  <clr-dg-row *ngFor="let r of result">
-    <clr-dg-cell>{{r.form}}</clr-dg-cell>
-    <clr-dg-cell>{{r.field}}</clr-dg-cell>
-    <clr-dg-cell *ngIf="!r.iterable">{{r.value}}</clr-dg-cell>
-    <clr-dg-cell *ngIf="r.iterable">
-      <div *ngFor="let item of r.value">
-      <span class="label label-blue">{{item}}</span>
-    </div>
-    </clr-dg-cell>
-  </clr-dg-row>
-</clr-datagrid>
+<nz-descriptions *ngFor="let formResult of preview | keyvalue" [nzTitle]="formResult.key" nzBordered>
+  <nz-descriptions-item *ngFor="let fieldResult of formResult.value" [nzTitle]="fieldResult.field">
+    <ng-container *ngIf="!fieldResult.iterable; else iterableField">
+      {{fieldResult.value}}
+    </ng-container>
+    <ng-template #iterableField>
+      <nz-list
+        [nzDataSource]="fieldResult.value"
+        nzBordered
+        nzSize="small"
+        [nzRenderItem]="fieldValueItem"
+      >
+        <ng-template #fieldValueItem let-item><nz-list-item [nzContent]="item"></nz-list-item></ng-template>
+      </nz-list>
+    </ng-template>
+  </nz-descriptions-item>
+</nz-descriptions>

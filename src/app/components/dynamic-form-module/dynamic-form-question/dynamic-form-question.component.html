@@ -39,8 +39,8 @@
       <nz-form-item *ngSwitchCase="'file'">
         <nz-form-label [nzFor]="qBase.key"><strong>{{qBase.label}}</strong></nz-form-label>
         <nz-form-control [nzExtra]="qBase.helperText">
-          <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeConfirmFile">
-            <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
+          <nz-upload [(nzFileList)]="fileList" [nzMultiple]="fileMultipleSelection" [nzBeforeUpload]="beforeConfirmFile">
+            <button nz-button><i nz-icon nzType="upload"></i><span>Select File{{fileMultipleSelection ? '(s)' : ''}}</span></button>
           </nz-upload>
           <button
             nz-button

@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, NgZone, OnInit, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ElectronService} from 'ngx-electron';
-import OpenDialogOptions = Electron.OpenDialogOptions;
-import FileFilter = Electron.FileFilter;
 import {QuestionBase} from '../../../models/dynamic-form-models/question-base';
 import {UserSettingsService} from '../../../services/user-settings.service';
 import {SelectQuestion} from '../../../models/dynamic-form-models/question-select';
@@ -27,14 +25,10 @@ export class DynamicFormQuestionComponent implements OnInit {
   options: any[] = [];
   inputPattern = null;
   fileList: UploadFile[] = [];
-  fileFilter: FileFilter[] = [{ name: 'All Files', extensions: ['*'] }];
-  // tslint:disable-next-line:max-line-length
-  fileInputProperties: ('openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory')[] = ['openFile'];
+  fileMultipleSelection: boolean;
 
   constructor(private uss: UserSettingsService,
-              private tds: TemporaryDataService,
-              private es: ElectronService,
-              private zone: NgZone) {}
+              private tds: TemporaryDataService) {}
 
   ngOnInit() {
     this.prepareAttributes();
@@ -82,20 +76,8 @@ export class DynamicFormQuestionComponent implements OnInit {
         break;
       case 'file':
         const fq = this.qBase as FileQuestion;
-        this.fileFilter = fq.filter;
-        switch (fq.target) {
-          case 'file':
-            this.fileInputProperties = ['openFile'];
-            break;
-          case 'directory':
-            this.fileInputProperties = ['openDirectory'];
-            break;
-        }
-        if (fq.multiple) {
-          this.fileInputProperties.push('multiSelections');
-        }
-        console.log(this.fileInputProperties);
-        console.log(this.fileFilter);
+        // TODO add file type filter
+        this.fileMultipleSelection = fq.multiple;
         break;
       default:
         break;
@@ -106,20 +88,6 @@ export class DynamicFormQuestionComponent implements OnInit {
     console.log(this.fileList);
     const filePaths = this.fileList.map(f => f.path);
     this.form.controls[this.qBase.key].setValue(filePaths);
-  }
-
-  addFile() {
-    const options: OpenDialogOptions = {
-      filters: this.fileFilter,
-      properties: this.fileInputProperties
-    };
-    this.es.remote.dialog.showOpenDialog(this.es.remote.getCurrentWindow(),
-        options).then(result => {
-      if (result.filePaths === undefined) { return; }
-      this.zone.run(() => {
-        this.form.controls[this.qBase.key].setValue(result.filePaths);
-      });
-    });
   }
 
   beforeConfirmFile = (file: UploadFile): boolean => {
