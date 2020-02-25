@@ -42,7 +42,6 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   formData: any;
   @ViewChild('formDataPreview', {static: false}) formDataPreview: DynamicFormResultPreviewComponent;
 
-  showNotSavedWarning: boolean;
   showMultipleFormCodeDialog: boolean;
   showNoFormDialog: boolean;
   showSavedDialog: boolean;
@@ -184,10 +183,6 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  showForm() {
-    this.isFormVisible = true;
-  }
-
   onQuestionValue(parentPage: WizardPage, controlKey: string, questionValue: any) {
     const updatedValue = {};
     updatedValue[controlKey] = questionValue;
@@ -210,12 +205,6 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
 
   activateProcess(parentPage: WizardPage, process: FormValidProcess, processIndex: number) {
     this.dfs.formValidProcessTriage(this.actionIdentifier, process, processIndex, parentPage, this.formData.record);
-  }
-
-  onWizardFinish() {
-    this.result = this.formData;
-    this.formDataPreview.updateResult();
-    this.showNotSavedWarning = true;
   }
 
   saveResult() {
@@ -264,7 +253,9 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   stepDone() {
     this.result = this.formData;
     this.formDataPreview.updateResult();
-    this.showNotSavedWarning = true;
+    this.nzNotification.warning('Not saved',
+      'Please note that your collection record has not yet been saved. ' +
+      'Please review the data before saving.');
   }
 
   onStepChange(step: number) {

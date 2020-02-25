@@ -1,105 +1,138 @@
-<clr-tabs>
-  <clr-tab>
-    <button clrTabLink>Access Control</button>
-    <clr-tab-content *clrIfActive>
-      <div class="card">
-        <div class="card-header">
-          Add
-        </div>
-        <div class="card-block">
-          <div class="card-text">
-            <button class="btn btn-primary-outline" (click)="addNewRecord('operator')">Operator</button>
-            <button class="btn btn-primary-outline" (click)="addNewRecord('token')">Access Token</button>
-            <button class="btn btn-primary-outline" (click)="addNewRecord('role')">Role</button>
-          </div>
+<nz-tabset>
+  <nz-tab nzTitle="Access Control">
+    <div nz-row nzType="flex" nzJustify="start" nzGutter="8">
+      <div nz-col>
+        <button nz-button nzType="default" (click)="addNewRecord('operator')">Operator</button></div>
+      <div nz-col>
+      <button nz-button nzType="default" (click)="addNewRecord('token')">Access Token</button></div>
+      <div nz-col>
+      <button nz-button nzType="default" (click)="addNewRecord('role')">Role</button></div>
+    </div>
+  </nz-tab>
+  <nz-tab nzTitle="Parameter">
+    <div class="card">
+      <div class="card-header">
+        Add
+      </div>
+      <div class="card-block">
+        <div class="card-text">
+          <button class="btn btn-primary-outline" (click)="addNewRecord('study')" disabled>Study</button>
+          <button class="btn btn-primary-outline" (click)="addNewRecord('location')">Location</button>
+          <button class="btn btn-primary-outline" (click)="addNewRecord('instrument')">Instrument</button>
         </div>
       </div>
-    </clr-tab-content>
-  </clr-tab>
-  <clr-tab>
-    <button clrTabLink>Parameter</button>
-    <clr-tab-content *clrIfActive>
+    </div>
+  </nz-tab>
+  <nz-tab nzTitle="Notification">
+    <div class="card">
+      <div class="card-header">
+        Add
+      </div>
+      <div class="card-block">
+        <div class="card-text">
+          <button class="btn btn-primary-outline" (click)="addNewRecord('email-group')">Email Group</button>
+        </div>
+      </div>
+    </div>
+  </nz-tab>
+  <nz-tab nzTitle="Form & Report">
+    <div class="card">
+      <div class="card-header">
+        Add
+      </div>
+      <div class="card-block">
+        <div class="card-text">
+          <button class="btn btn-primary-outline" disabled>Form Template</button>
+          <button class="btn btn-primary-outline" disabled>Report Template</button>
+        </div>
+      </div>
+    </div>
+  </nz-tab>
+</nz-tabset>
 
-      <div class="card">
-        <div class="card-header">
-          Add
-        </div>
-        <div class="card-block">
-          <div class="card-text">
-            <button class="btn btn-primary-outline" (click)="addNewRecord('study')" disabled>Study</button>
-            <button class="btn btn-primary-outline" (click)="addNewRecord('location')">Location</button>
-            <button class="btn btn-primary-outline" (click)="addNewRecord('instrument')">Instrument</button>
-          </div>
-        </div>
-      </div>
-    </clr-tab-content>
-  </clr-tab>
-  <clr-tab>
-    <button clrTabLink>Notification</button>
-    <clr-tab-content *clrIfActive>
-      <div class="card">
-        <div class="card-header">
-          Add
-        </div>
-        <div class="card-block">
-          <div class="card-text">
-            <button class="btn btn-primary-outline" (click)="addNewRecord('email-group')">Email Group</button>
-          </div>
-        </div>
-      </div>
-    </clr-tab-content>
-  </clr-tab>
-  <clr-tab>
-    <button clrTabLink>Form & Report</button>
-    <clr-tab-content *clrIfActive>
-      <div class="card">
-        <div class="card-header">
-          Add
-        </div>
-        <div class="card-block">
-          <div class="card-text">
-            <button class="btn btn-primary-outline" disabled>Form Template</button>
-            <button class="btn btn-primary-outline" disabled>Report Template</button>
-          </div>
-        </div>
-      </div>
-    </clr-tab-content>
-  </clr-tab>
-</clr-tabs>
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="showModal.newOperator"
+  nzPlacement="right"
+  nzTitle="New operator"
+  (nzOnClose)="onConfirm('operator', false, operatorForm)"
+>
+  <form nz-form nzLayout="vertical" [formGroup]="operatorForm">
+    <nz-form-item>
+      <nz-form-label><strong>Full name</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="name" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Email</strong></nz-form-label>
+      <nz-form-control>
+        <input type="email" nz-input formControlName="email" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+    <nz-form-label><strong>Study</strong></nz-form-label>
+    <nz-form-control>
+      <nz-select
+        [nzMaxTagCount]="3"
+        [nzMaxTagPlaceholder]="studyMaxTagPlaceHolder"
+        nzMode="multiple"
+        nzPlaceHolder="Please select"
+        formControlName="projects"
+      >
+        <nz-option *ngFor="let study of studies" [nzLabel]="study.name" [nzValue]="study.identifier"></nz-option>
+      </nz-select>
+      <ng-template #studyMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Role</strong></nz-form-label>
+      <nz-form-control>
+        <nz-select
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="roleMaxTagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Please select"
+          formControlName="roles"
+        >
+          <nz-option *ngFor="let role of roles" [nzLabel]="role.name" [nzValue]="role.identifier"></nz-option>
+        </nz-select>
+        <ng-template #roleMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Email group</strong></nz-form-label>
+      <nz-form-control>
+        <nz-select
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="emailGroupMaxTagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Please select"
+          formControlName="roles"
+        >
+          <nz-option *ngFor="let nfg of notificationGroups" [nzLabel]="nfg.name" [nzValue]="nfg.identifier"></nz-option>
+        </nz-select>
+        <ng-template #emailGroupMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button (click)="onConfirm('operator', true, operatorForm)">Continue</button>
+      </nz-form-control>
+    </nz-form-item>
+</form>
+</nz-drawer>
 
-<clr-modal [(clrModalOpen)]="showModal.newOperator">
-  <h3 class="modal-title">Add new operator</h3>
-  <div class="modal-body">
-    <form class="clr-form clr-form-vertical" [formGroup]="operatorForm">
-      <clr-input-container>
-        <label>Full name</label>
-        <input clrInput type="text" formControlName="name" required />
-      </clr-input-container>
-      <clr-input-container>
-        <label>Email</label>
-        <input clrInput type="email" formControlName="email" required />
-      </clr-input-container>
-      <app-multiple-select #aosvc title="Study" [options]="studies" [displayField]="'name'" [valueField]="'identifier'" (valueChanged)="updateForm(operatorForm, 'projects', $event)"></app-multiple-select>
-      <app-multiple-select #aorvc title="Role" [options]="roles" [displayField]="'name'" [valueField]="'identifier'" (valueChanged)="updateForm(operatorForm, 'roles', $event)"></app-multiple-select>
-      <app-multiple-select #aoegvc title="Email Group" [options]="notificationGroups" [displayField]="'name'" [valueField]="'identifier'" (valueChanged)="updateForm(operatorForm, 'notificationGroup', $event)"></app-multiple-select>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirm('operator', false, operatorForm)">Cancel</button>
-    <button class="btn btn-danger" type="button" [disabled]="!operatorForm.valid" (click)="onConfirm('operator', true, operatorForm)">Continue</button>
-  </div>
-</clr-modal>
-
-<clr-modal [(clrModalOpen)]="showModal.newToken">
-  <h3 class="modal-title">Add new token</h3>
-  <div class="modal-body">
-    Please confirm you are going to create a new access token.
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirm('token', false)">Cancel</button>
-    <button class="btn btn-danger" type="button" (click)="onConfirm('token', true)">Continue</button>
-  </div>
-</clr-modal>
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="showModal.newToken"
+  nzPlacement="right"
+  nzTitle="New token"
+  (nzOnClose)="onConfirm('token', false, operatorForm)"
+>
+  <p nz-typography nzType="warning">You are going to create a new access token.</p>
+  <button nz-button (click)="onConfirm('token', true, operatorForm)">Continue</button>
+</nz-drawer>
 
 <clr-modal [(clrModalOpen)]="showModal.newRole">
   <h3 class="modal-title">Add new role</h3>

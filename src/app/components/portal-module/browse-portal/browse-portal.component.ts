@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {LabPipeService} from '../../../services/lab-pipe.service';
 import {DatabaseService} from '../../../services/database.service';
-import {NzNotificationService} from 'ng-zorro-antd';
+import {NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-browse-portal',
@@ -9,14 +10,24 @@ import {NzNotificationService} from 'ng-zorro-antd';
   styleUrls: ['./browse-portal.component.css']
 })
 export class BrowsePortalComponent implements OnInit {
+  mapOfExpandRemoteData: { [key: string]: boolean } = {};
+  mapOfExpandLocalData: { [key: string]: boolean } = {};
 
   remoteRecords: any[] = [];
   localRecords: any[] = [];
 
-  remoteReport: any = {};
+  remoteLoading: boolean;
+  localLoading: boolean;
 
-  showRemoteRecordReport: boolean;
-  constructor(private lps: LabPipeService, private dbs: DatabaseService, private nzNotification: NzNotificationService) { }
+  remoteReport: any = {};
+  remoteReportDataPreview: any;
+
+  remoteReportModal: NzModalRef;
+
+  constructor(private lps: LabPipeService, private dbs: DatabaseService,
+              private nzNotification: NzNotificationService,
+              private nzModal: NzModalService) {
+  }
 
   ngOnInit() {
     this.loadRemoteRecords();
@@ -24,18 +35,21 @@ export class BrowsePortalComponent implements OnInit {
   }
 
   loadRemoteRecords() {
+    this.remoteLoading = true;
     this.lps.getAllRecord(true).subscribe(
       (data: any) => {
         this.remoteRecords = data;
       },
-      (error: any) => console.log(error)
+      (error: any) => console.log(error),
+      () => this.remoteLoading = false
     );
   }
 
   loadLocalRecords() {
+    this.localLoading = true;
     this.dbs.readData().then((data: any[]) => {
       this.localRecords = data;
-    });
+    }).finally(() => this.localLoading = false);
   }
 
   upload(record: any) {
@@ -48,9 +62,24 @@ export class BrowsePortalComponent implements OnInit {
         });
   }
 
+
+  showRemoteReportModal(record: any, modalContent: TemplateRef<{}>, modalFooter: TemplateRef<{}>) {
+    this.report(record);
+    this.remoteReportModal = this.nzModal.create({
+      nzTitle: 'Record Preview',
+      nzContent: modalContent,
+      nzFooter: modalFooter
+    });
+  }
+
+  destroyRemoteReportModal() {
+    this.remoteReportModal.destroy();
+    this.remoteReport = {};
+  }
+
   report(record: any) {
     this.remoteReport = {record};
-    this.showRemoteRecordReport = true;
+    this.remoteReportDataPreview = _.groupBy(record.record, 'form');
     this.lps.getStudy(record.studyIdentifier).subscribe(
       (data: any) => {
         this.remoteReport.study = data;
@@ -63,9 +92,8 @@ export class BrowsePortalComponent implements OnInit {
     );
   }
 
-  closeReport() {
-    this.remoteReport = {};
-    this.showRemoteRecordReport = false;
+  isArray(data: any) {
+    return _.isArray(data);
   }
 
   downloadPdf() {

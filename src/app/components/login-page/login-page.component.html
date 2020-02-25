@@ -35,23 +35,16 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-control>
-        <button nz-button nzType="primary" [disabled]="!loginForm.valid" (click)="onSubmit()">Sign in</button>
+        <button nz-button nzType="primary" [disabled]="!loginForm.valid" (click)="onSubmit(confirmLoginContent)">Sign in</button>
       </nz-form-control>
     </nz-form-item>
   </form>
 </div>
-<nz-modal [(nzVisible)]="confirmLoginDialogOpened" nzTitle="Confirm your details" [nzClosable]="false"
-          (nzOnCancel)="onConfirm(false)"
-          (nzOnOk)="onConfirm(true)">
-  <p>Are you sure you want to continue?</p>
-  <dl class="clr-row">
-    <dt class="clr-col-4 text-primary"><strong>Location:</strong></dt>
-    <dd class="clr-col-8 text-success"><strong>{{ selectedLocation?.name }}</strong></dd>
 
-    <dt class="clr-col-4 text-primary"><strong>Instrument:</strong></dt>
-    <dd class="clr-col-8 text-success"><strong>{{ selectedInstrument?.name }}</strong></dd>
-
-    <dt class="clr-col-4 text-primary"><strong>Operator:</strong></dt>
-    <dd class="clr-col-8 text-success"><strong>{{ currentOperator?.name }}</strong></dd>
-  </dl>
-</nz-modal>
+<ng-template #confirmLoginContent>
+  <nz-descriptions nzTitle="Your login information" nzBordered [nzColumn]="1">
+    <nz-descriptions-item nzTitle="Location">{{ selectedLocation?.name }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Instrument">{{ selectedInstrument?.name }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Operator">{{ currentOperator?.name }}</nz-descriptions-item>
+  </nz-descriptions>
+</ng-template>

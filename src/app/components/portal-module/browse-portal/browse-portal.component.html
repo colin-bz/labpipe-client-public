@@ -1,169 +1,119 @@
-<app-tour tour="browse"></app-tour>
-<div id="tour-remote-records">
-<h2>Remote records <button id="tour-remote-retry" class="btn btn-primary btn-sm" type="button" (click)="loadRemoteRecords()">reload</button>
-</h2>
-  <clr-datagrid *ngIf="remoteRecords && remoteRecords.length > 0; else noRecordRemote">
-    <clr-dg-column [clrDgField]="'studyIdentifier'">Study
-    </clr-dg-column>
-    <clr-dg-column [clrDgField]="'instrumentIdentifier'" >Instrument</clr-dg-column>
-    <clr-dg-column [clrDgField]="'formIdentifier'" >Form</clr-dg-column>
-    <clr-dg-column [clrDgField]="'created'">Created</clr-dg-column>
-    <clr-dg-column [clrDgField]="'uploaded_by'" >Operator</clr-dg-column>
-
-    <clr-dg-row *clrDgItems="let record of remoteRecords" [clrDgItem]="record">
-      <clr-dg-cell>{{record.studyIdentifier}}</clr-dg-cell>
-      <clr-dg-cell>{{record.instrumentIdentifier}}</clr-dg-cell>
-      <clr-dg-cell>{{record.formIdentifier}}</clr-dg-cell>
-      <clr-dg-cell>{{record.created | date: 'yyyy-MM-dd' }}</clr-dg-cell>
-      <clr-dg-cell>{{record.uploaded_by}}</clr-dg-cell>
-      <clr-dg-action-overflow id="tour-remote-action">
-        <button class="action-item" (click)="report(record)">View Report</button>
-      </clr-dg-action-overflow>
-      <clr-dg-row-detail *clrIfExpanded>
-        {{record|json}}
-      </clr-dg-row-detail>
-    </clr-dg-row>
-
-    <clr-dg-footer>
-      <clr-dg-pagination #pagination [clrDgPageSize]="5" [clrDgTotalItems]="remoteRecords.length">
-        <clr-dg-page-size [clrPageSizeOptions]="[5, 10, 20]">records per page</clr-dg-page-size>
-        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-        of {{pagination.totalItems}} {{pagination.totalItems > 1 ? 'records' : 'record'}}
-      </clr-dg-pagination>
-    </clr-dg-footer>
-  </clr-datagrid>
-  <ng-template #noRecordRemote>
-    <div class="alert alert-info" role="alert">
-      <div class="alert-items">
-        <div class="alert-item static">
-        <span class="alert-text">
-                    No record retrieved from server.
-          <button class="btn btn-primary-outline btn-sm" type="button" (click)="loadRemoteRecords()">retry</button>
-        </span>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-</div>
-
-<div id="tour-local-records">
-  <h2>Local records <button id="tour-local-retry" class="btn btn-primary btn-sm" type="button" (click)="loadLocalRecords()">reload</button></h2>
-  <clr-datagrid *ngIf="localRecords && localRecords.length > 0; else noRecordLocal">
-    <clr-dg-column [clrDgField]="'data.studyIdentifier'">Study</clr-dg-column>
-    <clr-dg-column [clrDgField]="'data.instrumentIdentifier'" >Instrument</clr-dg-column>
-    <clr-dg-column [clrDgField]="'data.formIdentifier'" >Form</clr-dg-column>
-    <clr-dg-column [clrDgField]="'data.created'">Created</clr-dg-column>
-    <clr-dg-column [clrDgField]="'data.uploaded_by'" >Operator</clr-dg-column>
-
-    <clr-dg-row *clrDgItems="let record of localRecords">
-      <clr-dg-cell>{{record.data.studyIdentifier}}</clr-dg-cell>
-      <clr-dg-cell>{{record.data.instrumentIdentifier}}</clr-dg-cell>
-      <clr-dg-cell>{{record.data.formIdentifier}}</clr-dg-cell>
-      <clr-dg-cell>{{record.data.created | date: 'yyyy-MM-dd' }}</clr-dg-cell>
-      <clr-dg-cell>{{record.data.saved_by}}</clr-dg-cell>
-      <clr-dg-action-overflow id="tour-local-action">
-        <button class="action-item" (click)="upload(record)">Upload</button>
-      </clr-dg-action-overflow>
-      <clr-dg-row-detail *clrIfExpanded>
-        {{record|json}}
-      </clr-dg-row-detail>
-    </clr-dg-row>
-
-    <clr-dg-footer>
-      <clr-dg-pagination #pagination [clrDgPageSize]="5" [clrDgTotalItems]="localRecords.length">
-        <clr-dg-page-size [clrPageSizeOptions]="[5, 10, 20]">records per page</clr-dg-page-size>
-        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-        of {{pagination.totalItems}} {{pagination.totalItems > 1 ? 'records' : 'record'}}
-      </clr-dg-pagination>
-    </clr-dg-footer>
-  </clr-datagrid>
-  <ng-template #noRecordLocal>
-    <div class="alert alert-info" role="alert">
-      <div class="alert-items">
-        <div class="alert-item static">
-        <span class="alert-text">
-                    No locally saved record.
-          <button class="btn btn-primary-outline btn-sm" type="button" (click)="loadLocalRecords()">retry</button>
-        </span>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-</div>
-
-<clr-modal [(clrModalOpen)]="showRemoteRecordReport" [clrModalSize]="'xl'" [clrModalClosable]="false">
-  <h3 class="modal-title">LabPipe Record Report</h3>
-  <div class="alert alert-info" role="alert">
-    <div class="alert-items">
-      <div class="alert-item static">
-        <span class="alert-text">
-          This report will be improved on next release.
-        </span>
-      </div>
-    </div>
-  </div>
-  <div class="modal-body">
-    <h1>Study</h1>
-    <table class="table">
+<nz-tabset>
+  <nz-tab nzTitle="Remote records">
+    <button nz-button nzType="primary" (click)="loadRemoteRecords()">Reload</button>
+    <nz-table #remoteTable [nzData]="remoteRecords" [nzTitle]="remoteTableHeader" [nzLoading]="remoteLoading">
       <thead>
       <tr>
-        <th class="left">Code name</th>
-        <th class="left">Full name</th>
+        <th nzShowExpand></th>
+        <th>Study</th>
+        <th>Instrument</th>
+        <th>Form</th>
+        <th>Created</th>
+        <th>Operator</th>
+        <th>Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td class="left">{{remoteReport?.study?.identifier}}</td>
-        <td class="left">{{remoteReport?.study?.name}}</td>
-      </tr>
+      <ng-template ngFor let-data [ngForOf]="remoteTable.data">
+        <tr>
+          <td nzShowExpand [(nzExpand)]="mapOfExpandRemoteData[data.id]"></td>
+          <td>{{data.studyIdentifier}}</td>
+          <td>{{data.instrumentIdentifier}}</td>
+          <td>{{data.formIdentifier}}</td>
+          <td>{{data.created | date: 'yyyy-MM-dd' }}</td>
+          <td>{{data.uploaded_by}}</td>
+          <td>
+            <button nz-button nzType="dashed" (click)="showRemoteReportModal(data, reportContent, reportFooter)">Preview</button></td>
+        </tr>
+        <tr [nzExpand]="mapOfExpandRemoteData[data.id]">
+          <td></td>
+          <td colspan="6">
+            {{data | json}}
+          </td>
+        </tr>
+      </ng-template>
       </tbody>
-    </table>
-    <h1>Instrument</h1>
-    <table class="table">
+      <ng-template #remoteTableHeader>
+        <nz-statistic [nzValue]="remoteRecords?.length | number" [nzTitle]="'Total remote records'"></nz-statistic>
+      </ng-template>
+    </nz-table>
+  </nz-tab>
+  <nz-tab nzTitle="Local records">
+    <button nz-button nzType="primary" (click)="loadLocalRecords()">Reload</button>
+    <nz-table #localTable [nzData]="localRecords" [nzTitle]="localTableHeader" [nzLoading]="localLoading">
       <thead>
       <tr>
-        <th class="left">Code name</th>
-        <th class="left">Full name</th>
+        <th nzShowExpand></th>
+        <th>Study</th>
+        <th>Instrument</th>
+        <th>Form</th>
+        <th>Created</th>
+        <th>Operator</th>
+        <th>Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td class="left">{{remoteReport?.instrument?.identifier}}</td>
-        <td class="left">{{remoteReport?.instrument?.name}}</td>
-      </tr>
+      <ng-template ngFor let-data [ngForOf]="localTable.data">
+        <tr>
+          <td nzShowExpand [(nzExpand)]="mapOfExpandLocalData[data.id]"></td>
+          <td>{{data.data.studyIdentifier}}</td>
+          <td>{{data.data.instrumentIdentifier}}</td>
+          <td>{{data.data.formIdentifier}}</td>
+          <td>{{data.data.created | date: 'yyyy-MM-dd' }}</td>
+          <td>{{data.data.saved_by}}</td>
+        </tr>
+        <tr [nzExpand]="mapOfExpandLocalData[data.id]">
+          <td></td>
+          <td colspan="5">
+            {{data | json}}
+          </td>
+        </tr>
+      </ng-template>
       </tbody>
-    </table>
-    <h1>Sample</h1>
-    <table class="table">
-      <thead>
-      <tr>
-        <th class="left">Operator</th>
-        <th class="left">Record Created</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class="left">{{remoteReport?.record?.uploaded_by}}</td>
-        <td class="left">{{remoteReport?.record?.created | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      </tr>
-      </tbody>
-    </table>
-    <table class="table" *ngFor="let page of remoteReport?.record?.record | keyvalue">
-      <thead>
-      <tr>
-        <th class="left" colspan="2">{{page.key}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let field of page.value | keyvalue">
-        <td class="left">{{field.key}}</td>
-        <td class="left">{{field.value}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" [disabled]="true" (click)="downloadPdf()"><clr-icon shape="download"></clr-icon> Download</button>
-    <button class="btn btn-primary" type="button" (click)="closeReport()">OK</button>
-  </div>
-</clr-modal>
+      <ng-template #localTableHeader>
+        <nz-statistic [nzValue]="localRecords?.length | number" [nzTitle]="'Total local records'"></nz-statistic>
+      </ng-template>
+    </nz-table>
+  </nz-tab>
+</nz-tabset>
+
+<ng-template #reportContent>
+  <nz-descriptions nzTitle="Study" nzBordered [nzColumn]="1">
+    <nz-descriptions-item nzTitle="Identifier">{{remoteReport?.study?.identifier}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Name">{{remoteReport?.study?.name}}</nz-descriptions-item>
+  </nz-descriptions>
+  <nz-descriptions nzTitle="Instrument" nzBordered [nzColumn]="1">
+    <nz-descriptions-item nzTitle="Identifier">{{remoteReport?.instrument?.identifier}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Name">{{remoteReport?.instrument?.name}}</nz-descriptions-item>
+  </nz-descriptions>
+  <nz-descriptions nzTitle="Collection" nzBordered [nzColumn]="1">
+    <nz-descriptions-item nzTitle="Operator">{{remoteReport?.record?.uploaded_by}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Date">{{remoteReport?.record?.created | date:'yyyy-MM-dd HH:mm'}}</nz-descriptions-item>
+  </nz-descriptions>
+  <nz-descriptions nzTitle="Sample" nzBordered [nzColumn]="1">
+    <nz-descriptions-item nzTitle="Operator">{{remoteReport?.record?.uploaded_by}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Date">{{remoteReport?.record?.created | date:'yyyy-MM-dd HH:mm'}}</nz-descriptions-item>
+  </nz-descriptions>
+  <nz-descriptions *ngFor="let formResult of remoteReport?.record?.record | keyvalue" [nzTitle]="formResult.key" nzBordered [nzColumn]="1">
+    <nz-descriptions-item *ngFor="let fieldResult of formResult.value | keyvalue" [nzTitle]="fieldResult.key">
+      <ng-container *ngIf="!isArray(fieldResult.value); else iterableField">
+        {{fieldResult.value}}
+      </ng-container>
+      <ng-template #iterableField>
+        <nz-list
+          [nzDataSource]="fieldResult.value"
+          nzBordered
+          nzSize="small"
+          [nzRenderItem]="fieldValueItem"
+        >
+          <ng-template #fieldValueItem let-item><nz-list-item [nzContent]="item"></nz-list-item></ng-template>
+        </nz-list>
+      </ng-template>
+    </nz-descriptions-item>
+  </nz-descriptions>
+</ng-template>
+
+<ng-template #reportFooter>
+  <button nz-button nzType="dashed" (click)="downloadPdf()" disabled>Download PDF</button>
+  <button nz-button nzType="primary" (click)="destroyRemoteReportModal()">Close</button>
+</ng-template>

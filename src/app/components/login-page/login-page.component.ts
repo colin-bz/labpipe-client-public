@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserSettingsService} from '../../services/user-settings.service';
 import {ElectronService} from 'ngx-electron';
 import {TemporaryDataService} from '../../services/temporary-data.service';
-import {NzNotificationService} from 'ng-zorro-antd';
+import {NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 
 
 @Component({
@@ -24,11 +24,12 @@ export class LoginPageComponent implements OnInit {
   selectedInstrument: any;
   appVersion: string;
 
-  confirmLoginDialogOpened = false;
+  confirmLoginModal: NzModalRef;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private nzNotification: NzNotificationService,
+              private nzModal: NzModalService,
               private us: UserSettingsService,
               private es: ElectronService,
               private tds: TemporaryDataService) {
@@ -57,20 +58,6 @@ export class LoginPageComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      const u = this.loginForm.get('operator').value;
-      const p = this.loginForm.get('password').value;
-      const valid = this.tryLogin(u, p);
-      if (valid) {
-        this.confirmLoginDialogOpened = true;
-      } else {
-        this.loginFail();
-      }
-
-    }
-  }
-
   tryLogin(username: string, password: string): boolean {
     username = username.toLowerCase();
     const user = this.operators$.filter(o => o.username.toLowerCase() === username);
@@ -82,8 +69,32 @@ export class LoginPageComponent implements OnInit {
     return result;
   }
 
+  showConfirmModal(modalContent: TemplateRef<{}>) {
+    this.confirmLoginModal = this.nzModal.create({
+      nzTitle: 'Please review your login information',
+      nzContent: modalContent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzOnOk: () => this.onConfirm(true),
+      nzOnCancel: () => this.onConfirm(false)
+    });
+  }
+
+  onSubmit(modalContent: TemplateRef<{}>) {
+    if (this.loginForm.valid) {
+      const u = this.loginForm.get('operator').value;
+      const p = this.loginForm.get('password').value;
+      const valid = this.tryLogin(u, p);
+      if (valid) {
+        this.showConfirmModal(modalContent);
+      } else {
+        this.loginFail();
+      }
+    }
+  }
+
   onConfirm(status: boolean) {
-    this.confirmLoginDialogOpened = false;
+    this.confirmLoginModal.destroy();
     if (status) {
       this.tds.location = this.loginForm.get('location').value;
       this.us.setLocation(this.loginForm.get('location').value);

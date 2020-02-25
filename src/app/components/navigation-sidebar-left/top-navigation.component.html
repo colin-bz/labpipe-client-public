@@ -20,7 +20,7 @@
       <i nz-icon nzType="setting"></i>
       <span>Settings</span>
     </li>
-    <li nz-menu-item (click)="reload()">
+    <li nz-menu-item nz-popconfirm nzPopconfirmTitle="Are you sure to reload?" (nzOnConfirm)="reload()">
       <i nz-icon nzType="reload"></i>
       <span>Reload</span>
     </li>

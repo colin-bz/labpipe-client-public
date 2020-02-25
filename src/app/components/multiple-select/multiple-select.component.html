@@ -11,4 +11,19 @@
     </select>
   </div>
 </div>
+<nz-form-item>
+  <nz-form-label><strong>{{title}}</strong></nz-form-label>
+  <nz-form-control>
+    <nz-select
+      [nzMaxTagCount]="3"
+      [nzMaxTagPlaceholder]="tagPlaceHolder"
+      nzMode="multiple"
+      nzPlaceHolder="Please select"
+      [(ngModel)]="listOfSelectedValue"
+    >
+      <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+    </nz-select>
+    <ng-template #tagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
+  </nz-form-control>
+</nz-form-item>
 

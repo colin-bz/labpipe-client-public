@@ -95,17 +95,6 @@
   </div>
 </div>
 
-<clr-modal [(clrModalOpen)]="showNotSavedWarning">
-  <h3 class="modal-title">Record not yet saved!</h3>
-  <div class="modal-body">
-    <p class="text-danger">Please note that your record has not been saved yet. If you need to make any change, you can
-      reopen the form and make necessary changes.</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="showNotSavedWarning = false">OK</button>
-  </div>
-</clr-modal>
-
 <clr-modal [(clrModalOpen)]="showMultipleFormCodeDialog" [clrModalClosable]="false">
   <h3 class="modal-title">Multiple forms available</h3>
   <div class="modal-body">

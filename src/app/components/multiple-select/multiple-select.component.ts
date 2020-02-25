@@ -48,7 +48,7 @@ export class MultipleSelectComponent implements OnInit, OnChanges {
   }
 
   clear() {
-    this.selected[this.id] = new Set();;
+    this.selected[this.id] = new Set();
     this.select = undefined;
   }
 
