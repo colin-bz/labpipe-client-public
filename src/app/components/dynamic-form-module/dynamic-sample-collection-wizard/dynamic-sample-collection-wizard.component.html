@@ -1,14 +1,14 @@
-<form nz-form [formGroup]="studyForm">
+<form nz-form [formGroup]="studyForm" nzLayout="vertical">
   <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="study"><strong>Study</strong></nz-form-label>
-    <nz-form-control [nzSpan]="14">
-      <nz-select id="study" nzShowSearch nzAllowClear nzPlaceHolder="Study" formControlName="study" required>
+    <nz-form-label><strong>Select study to start</strong></nz-form-label>
+    <nz-form-control>
+      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Study" formControlName="study" required>
         <nz-option *ngFor="let s of projects$" nzLabel="{{s.name}}" [nzValue]="s"></nz-option>
       </nz-select>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+    <nz-form-control>
       <button nz-button nzType="primary" [disabled]="!studyForm.valid" (click)="showDataCollectionForm()">Start</button>
     </nz-form-control>
   </nz-form-item>

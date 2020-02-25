@@ -9,5 +9,13 @@
 }
 
 .fullheight {
-  height: 100vh;
+  min-height: 100vh;
+}
+
+.safe-margin {
+  margin: 34px;
+}
+
+.m-t-5 {
+  margin-top: 5px;
 }

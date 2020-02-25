@@ -1,77 +1,57 @@
-<app-in-app-alert [messages]="messages"></app-in-app-alert>
-<app-tour tour="settings"></app-tour>
-<form class="clr-form clr-form-vertical" [formGroup]="settingForm">
-  <div id="tour-data-directory" class="clr-form-control">
-    <label class="clr-control-label">Data Directory</label>
-    <div class="clr-control-container">
-      <button class="btn btn-primary" (click)="setDataDirectory()">Browse</button>
-      <span class="clr-subtext">{{this.settingForm.get('dirData').value}}</span>
-    </div>
-  </div>
-  <div id="tour-api-root" class="clr-form-control">
-    <label class="clr-control-label">API Root URL</label>
-    <div class="clr-control-container">
-      <div class="clr-row">
-        <div class="clr-col">
-          <input clrInput type="text" formControlName="apiRoot" required/>
+  <form nz-form [formGroup]="settingForm" nzLayout="vertical">
+    <nz-form-item>
+      <nz-form-control [nzExtra]="dataDirectory">
+        <button nz-button nzType="primary" (click)="setDataDirectory()">Set data directory</button>
+      </nz-form-control>
+      <ng-template #dataDirectory>
+        <nz-tag [nzColor]="this.settingForm.get('dirData').value ? 'green' : 'red'">{{this.settingForm.get('dirData').value ? this.settingForm.get('dirData').value : 'Data directory not set'}}</nz-tag>
+      </ng-template>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="api-root"><strong>API Root</strong></nz-form-label>
+      <nz-form-control [nzExtra]="apiRoot">
+        <div nz-row [nzGutter]="8">
+          <div nz-col [nzSpan]="20">
+            <input id="api-root" type="text" nz-input formControlName="apiRoot" placeholder="API root URL"/>
+          </div>
+          <div nz-col [nzSpan]="4">
+            <button nz-button nzType="primary" (click)="validateApiRoot()">Validate</button>
+          </div>
         </div>
-        <div class="clr-col">
-          <button class="btn btn-primary" (click)="validateApiRoot()">Validate</button>
+      </nz-form-control>
+      <ng-template #apiRoot>
+        <nz-tag [nzColor]="isApiRootValid ? 'green' : 'red'">{{isApiRootValid ? 'Valid' : 'Invalid'}}</nz-tag>
+      </ng-template>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Access Token</strong></nz-form-label>
+      <nz-form-control [nzExtra]="accessToken">
+        <div nz-row [nzGutter]="8">
+          <div nz-col [nzSpan]="10">
+            <input type="text" nz-input formControlName="apiToken" placeholder="API access token"/>
+          </div>
+          <div nz-col [nzSpan]="10">
+            <input type="text" nz-input formControlName="apiKey" placeholder="API access key"/>
+          </div>
+          <div nz-col [nzSpan]="4">
+            <button nz-button nzType="primary" (click)="validateApiTokenKey()">Validate</button>
+          </div>
         </div>
-      </div>
-      <span class="clr-subtext">
-              <span *ngIf="isApiRootValid">
-              <clr-icon shape="success-standard" class="is-solid text-success mr-2"></clr-icon>
-                {{this.settingForm.get('apiRoot').value}}
-              </span>
-              <span *ngIf="!isApiRootValid" class="text-danger">
-              <clr-icon shape="error-standard" class="is-solid mr-2"></clr-icon>
-                No valid API root url.
-              </span></span>
-    </div>
-  </div>
-  <div id="tour-api-token" class="clr-form-control">
-    <label class="clr-control-label">API Token</label>
-    <div class="clr-control-container">
-      <div class="clr-row">
-        <div class="clr-col">
-          <input clrInput type="text" formControlName="apiToken" required/>
-        </div>
-        <div class="clr-col">
-          <input clrInput type="text" formControlName="apiKey" required/>
-        </div>
-        <div class="clr-col">
-          <button class="btn btn-primary" (click)="validateApiTokenKey()">Validate</button>
-        </div>
-      </div>
-      <span class="clr-subtext">
-              <span *ngIf="isApiTokenKeyValid">
-              <clr-icon shape="success-standard" class="is-solid text-success mr-2"></clr-icon>
-                <span class="label label-info">
-                  {{settingForm.get('apiToken').value}}
-                  <span class="badge">Token</span>
-                </span>
-                <span class="label label-info">
-                  {{settingForm.get('apiKey').value}}
-                  <span class="badge">Key</span>
-                </span>
-              </span>
-              <span *ngIf="!isApiTokenKeyValid" class="text-danger">
-              <clr-icon shape="error-standard" class="is-solid mr-2"></clr-icon>
-                No valid API token/key.
-              </span></span>
-    </div>
-  </div>
-
-  <clr-input-container id="tour-monitor-interval" >
-    <label>Server Monitor Interval (milliseconds)</label>
-    <input clrInput type="number" step="1" min="5000" formControlName="serverMonitorInterval" required />
-    <clr-control-helper>Updated value will take effect on next startup.</clr-control-helper>
-  </clr-input-container>
-
-  <clr-input-container id="tour-retry-interval" >
-    <label>Server Monitor Retry Interval (milliseconds)</label>
-    <input clrInput type="number" step="1" min="1000" formControlName="serverMonitorRetryInterval" required />
-    <clr-control-helper>Updated value will take effect on next startup.</clr-control-helper>
-  </clr-input-container>
-</form>
+      </nz-form-control>
+      <ng-template #accessToken>
+        <nz-tag [nzColor]="isApiTokenKeyValid ? 'green' : 'red'">{{isApiTokenKeyValid ? 'Valid' : 'Invalid'}}</nz-tag>
+      </ng-template>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Server Monitor Interval (milliseconds)</strong></nz-form-label>
+      <nz-form-control nzExtra="Updated value will take effect on next startup.">
+        <nz-input-number required formControlName="serverMonitorInterval" [nzMin]="5000" [nzStep]="100"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Server Monitor Retry Interval (milliseconds)</strong></nz-form-label>
+      <nz-form-control nzExtra="Updated value will take effect on next startup.">
+        <nz-input-number required formControlName="serverMonitorRetryInterval" [nzMin]="1000" [nzStep]="100"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+  </form>

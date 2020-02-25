@@ -1,8 +1,7 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LabPipeService} from '../../../services/lab-pipe.service';
 import {DatabaseService} from '../../../services/database.service';
-import * as _ from 'lodash';
-import {InAppAlertService, InAppMessage} from '../../../services/in-app-alert.service';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-browse-portal',
@@ -10,7 +9,6 @@ import {InAppAlertService, InAppMessage} from '../../../services/in-app-alert.se
   styleUrls: ['./browse-portal.component.css']
 })
 export class BrowsePortalComponent implements OnInit {
-  messages: InAppMessage[] = [];
 
   remoteRecords: any[] = [];
   localRecords: any[] = [];
@@ -18,7 +16,7 @@ export class BrowsePortalComponent implements OnInit {
   remoteReport: any = {};
 
   showRemoteRecordReport: boolean;
-  constructor(private lps: LabPipeService, private dbs: DatabaseService, private iaas: InAppAlertService) { }
+  constructor(private lps: LabPipeService, private dbs: DatabaseService, private nzNotification: NzNotificationService) { }
 
   ngOnInit() {
     this.loadRemoteRecords();
@@ -43,10 +41,10 @@ export class BrowsePortalComponent implements OnInit {
   upload(record: any) {
     this.lps.postRecord(record.data.url, record.data)
       .subscribe((data: any) => {
-          this.iaas.success(data.message, this.messages);
+          this.nzNotification.success('Success', data.message);
         },
         (error: any) => {
-          this.iaas.error(error.error.message, this.messages);
+          this.nzNotification.error('Error', error.error.message);
         });
   }
 

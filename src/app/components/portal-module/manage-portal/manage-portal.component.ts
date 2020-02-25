@@ -1,10 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Form, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LabPipeService} from '../../../services/lab-pipe.service';
-import {InAppAlertService} from '../../../services/in-app-alert.service';
 import {CollectionName, EmailGroup, FormTemplate, Operator, Role, Study} from '../../../models/parameter.model';
-import {DynamicFormResultPreviewComponent} from '../../dynamic-form-module/dynamic-form-result-preview/dynamic-form-result-preview.component';
 import {MultipleSelectComponent} from '../../multiple-select/multiple-select.component';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-manage-portal',
@@ -12,7 +11,6 @@ import {MultipleSelectComponent} from '../../multiple-select/multiple-select.com
   styleUrls: ['./manage-portal.component.css']
 })
 export class ManagePortalComponent implements OnInit {
-  messages: { type: string, message: string, closed?: boolean }[] = [];
 
   showModal = {
     newOperator: false,
@@ -44,7 +42,7 @@ export class ManagePortalComponent implements OnInit {
   operators: Operator[] = [];
   formTemplates: FormTemplate[] = [];
 
-  constructor(private formBuilder: FormBuilder, private lps: LabPipeService, private iaas: InAppAlertService) {
+  constructor(private formBuilder: FormBuilder, private lps: LabPipeService, private nzNotification: NzNotificationService) {
     this.operatorForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -137,8 +135,8 @@ export class ManagePortalComponent implements OnInit {
       case 'operator':
         if (confirm) {
             this.lps.addOperator(form.value)
-              .subscribe((data: any) => this.iaas.success(data.message, this.messages),
-                (error: any) => this.iaas.error(error.error.message, this.messages));
+              .subscribe((data: any) => this.nzNotification.success('Success', data.message),
+                (error: any) => this.nzNotification.error('Error', error.error.message));
         }
         this.showModal.newOperator = false;
         form.reset();
@@ -148,36 +146,36 @@ export class ManagePortalComponent implements OnInit {
         break;
       case 'token':
         if (confirm) {
-          this.lps.addToken().subscribe((data: any) => this.iaas.success(data.message, this.messages),
-            (error: any) => this.iaas.error(error.error.message, this.messages));
+          this.lps.addToken().subscribe((data: any) => this.nzNotification.success('Success', data.message),
+            (error: any) => this.nzNotification.error('Error', error.error.message));
         }
         this.showModal.newToken = false;
         break;
       case 'role':
         if (confirm) {
-          this.lps.addRole(form.value).subscribe((data: any) => this.iaas.success(data.message, this.messages),
-            (error: any) => this.iaas.error(error.error.message, this.messages));
+          this.lps.addRole(form.value).subscribe((data: any) => this.nzNotification.success('Success', data.message),
+            (error: any) => this.nzNotification.error('Error', error.error.message));
         }
         this.showModal.newRole = false;
         break;
       case 'location':
         if (confirm) {
-          this.lps.addLocation(form.value).subscribe((data: any) => this.iaas.success(data.message, this.messages),
-            (error: any) => this.iaas.error(error.error.message, this.messages));
+          this.lps.addLocation(form.value).subscribe((data: any) => this.nzNotification.success('Success', data.message),
+            (error: any) => this.nzNotification.error('Error', error.error.message));
         }
         this.showModal.newLocation = false;
         break;
       case 'instrument':
         if (confirm) {
-          this.lps.addInstrument(form.value).subscribe((data: any) => this.iaas.success(data.message, this.messages),
-            (error: any) => this.iaas.error(error.error.message, this.messages));
+          this.lps.addInstrument(form.value).subscribe((data: any) => this.nzNotification.success('Success', data.message),
+            (error: any) => this.nzNotification.error('Error', error.error.message));
         }
         this.showModal.newInstrument = false;
         break;
       case 'email-group':
         if (confirm) {
-          this.lps.addEmailGroup(form.value).subscribe((data: any) => this.iaas.success(data.message, this.messages),
-            (error: any) => this.iaas.error(error.error.message, this.messages));
+          this.lps.addEmailGroup(form.value).subscribe((data: any) => this.nzNotification.success('Success', data.message),
+            (error: any) => this.nzNotification.error('Error', error.error.message));
         }
         this.showModal.newEmailGroup = false;
         break;

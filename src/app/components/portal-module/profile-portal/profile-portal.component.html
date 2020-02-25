@@ -1,34 +1,26 @@
-<app-in-app-alert [messages]="messages"></app-in-app-alert>
-<h1>{{operator.name}}</h1>
-<table class="table table-noborder">
-  <tbody>
-  <tr>
-    <td class="left">Name</td>
-    <td class="left">{{operator.name}}</td>
-  </tr>
-  <tr>
-    <td class="left">Username</td>
-    <td class="left">{{operator.username}}</td>
-  </tr>
-  <tr>
-    <td class="left">Email</td>
-    <td class="left">{{operator.email}}</td>
-  </tr>
-  <tr>
-    <td class="left">Studies</td>
-    <td class="left"><span class="label" *ngFor="let s of operator.projects">{{s}}</span></td>
-  </tr>
-  <tr>
-    <td class="left">Notification Group</td>
-    <td class="left"><span class="label" *ngFor="let n of operator.notificationGroup">{{n}}</span></td>
-  </tr>
-  <tr>
-    <td class="left">Roles</td>
-    <td class="left"><span class="label" *ngFor="let r of operator.roles">{{r}}</span></td>
-  </tr>
-  </tbody>
-</table>
-<button class="btn btn-primary" type="button" (click)="showModal.changePassword = true">change password</button>
+<nz-descriptions [nzTitle]="operator.name" nzBordered [nzColumn]="1">
+  <nz-descriptions-item nzTitle="Name">{{operator.name}}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Username">{{operator.username}}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Email">{{operator.email}}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Studies">
+    <nz-list [nzDataSource]="operator.projects" nzBordered [nzRenderItem]="defaultItem">
+      <ng-template #defaultItem let-item>
+        <nz-list-item>
+          {{ item }}
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Notification groups">
+    <nz-list [nzDataSource]="operator.notificationGroup" nzBordered [nzRenderItem]="defaultItem">
+    </nz-list>
+  </nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Roles">
+    <nz-list [nzDataSource]="operator.roles" nzBordered [nzRenderItem]="defaultItem">
+    </nz-list>
+  </nz-descriptions-item>
+</nz-descriptions>
+<button nz-button nzType="danger" class="m-t-5" (click)="showModal.changePassword = true">Change password</button>
 
 <clr-modal [(clrModalOpen)]="showModal.changePassword">
   <h3 class="modal-title">Change password</h3>

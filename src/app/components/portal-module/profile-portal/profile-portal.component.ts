@@ -4,7 +4,7 @@ import {TemporaryDataService} from '../../../services/temporary-data.service';
 import {Operator} from '../../../models/parameter.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LabPipeService} from '../../../services/lab-pipe.service';
-import {InAppAlertService, InAppMessage} from '../../../services/in-app-alert.service';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-profile-portal',
@@ -13,7 +13,6 @@ import {InAppAlertService, InAppMessage} from '../../../services/in-app-alert.se
 })
 export class ProfilePortalComponent implements OnInit {
   operator: Operator;
-  messages: InAppMessage[] = [];
 
   showModal = {
     changePassword: false
@@ -24,7 +23,7 @@ export class ProfilePortalComponent implements OnInit {
   constructor(private uss: UserSettingsService,
               private tds: TemporaryDataService,
               private lps: LabPipeService,
-              private iaas: InAppAlertService,
+              private nzNotification: NzNotificationService,
               private fb: FormBuilder) {
     this.changePasswordForm = this.fb.group({
       current: ['', Validators.required],
@@ -40,10 +39,10 @@ export class ProfilePortalComponent implements OnInit {
   changePassword() {
     this.lps.updatePassword(this.changePasswordForm.get('confirm').value).subscribe((data: any) => {
       this.tds.password = this.changePasswordForm.get('confirm').value;
-      this.iaas.success(data.message, this.messages);
+      this.nzNotification.success('Success', data.message);
       },
       (error: any) => {
-        this.iaas.error(error.error.message, this.messages);
+        this.nzNotification.error('Error', error.error.message);
       },
       () => this.showModal.changePassword = false);
   }

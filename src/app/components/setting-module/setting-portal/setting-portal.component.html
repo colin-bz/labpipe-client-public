@@ -1,34 +1,27 @@
-<clr-tabs>
-  <clr-tab>
-    <button clrTabLink>General</button>
-    <clr-tab-content *clrIfActive>
-      <app-mandatory-setting></app-mandatory-setting>
-      <hr>
-      <div class="clr-form-control">
-        <label class="clr-control-label">Developer Tool</label>
-        <div class="clr-control-container">
-          <button class="btn btn-warning btn-sm" (click)="showDevTools()">Show</button>
-        </div>
-      </div>
-      <div class="clr-form-control">
-        <label class="clr-control-label">Clear cache</label>
-        <div class="clr-control-container">
-
-          <button class="btn btn-danger btn-sm" (click)="clearAppDataDirectory()">Clear cache</button>
-          <span class="clr-subtext">
-              {{appCachePath}}
-          </span>
-          <span class="clr-subtext">
-          <span class="text-danger">
-              <clr-icon shape="warning-standard" class="is-solid"></clr-icon>
-                All current settings will be lost.
-              </span>
-          </span>
-        </div>
-      </div>
-    </clr-tab-content>
-  </clr-tab>
-</clr-tabs>
+<nz-tabset>
+  <nz-tab nzTitle="General">
+    <app-mandatory-setting></app-mandatory-setting>
+  </nz-tab>
+  <nz-tab nzTitle="Advanced">
+    <form nz-form nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label><strong>Developer tool</strong></nz-form-label>
+        <nz-form-control >
+          <button nz-button nzType="danger" (click)="showDevTools()">Show developer tool</button>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label><strong>Cache</strong></nz-form-label>
+        <nz-form-control [nzExtra]="appCache">
+          <button nz-button nzType="danger" (click)="clearAppDataDirectory()">Clear cache</button>
+        </nz-form-control>
+        <ng-template #appCache>
+          <nz-tag [nzColor]="'red'">You will lose all current settings.</nz-tag>
+        </ng-template>
+      </nz-form-item>
+    </form>
+  </nz-tab>
+</nz-tabset>
 
 <clr-modal [(clrModalOpen)]="dialogClearCacheOpened">
   <h3 class="modal-title">Confirm your action</h3>

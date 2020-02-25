@@ -6,11 +6,11 @@
 <!--</div>-->
 
 <nz-layout>
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzWidth="200px">
+  <nz-sider class="fullheight" nzCollapsible [(nzCollapsed)]="isCollapsed" nzWidth="200px">
     <app-top-navigation [isCollapsed]="isCollapsed"></app-top-navigation>
   </nz-sider>
   <nz-layout>
-    <nz-content>
+    <nz-content class="safe-margin">
       <router-outlet></router-outlet>
     </nz-content>
   </nz-layout>

@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {ElectronService} from 'ngx-electron';
 import {UserSettingsService} from '../../../services/user-settings.service';
 import {LabPipeService} from '../../../services/lab-pipe.service';
-import {InAppAlertService, InAppMessage} from '../../../services/in-app-alert.service';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
     selector: 'app-mandatory-setting',
@@ -16,14 +16,12 @@ export class MandatorySettingComponent implements OnInit {
     isApiRootValid: boolean;
     isApiTokenKeyValid: boolean;
 
-    messages: InAppMessage[] = [];
-
     constructor(private us: UserSettingsService,
                 private es: ElectronService,
                 private zone: NgZone,
                 private http: HttpClient,
                 private lps: LabPipeService,
-                private iaas: InAppAlertService,
+                private nzNotification: NzNotificationService,
                 private formBuilder: FormBuilder) {
         this.settingForm = this.formBuilder.group({
             dirData: ['', Validators.required],
@@ -80,12 +78,12 @@ export class MandatorySettingComponent implements OnInit {
         if (url) {
           this.lps.publicAccess(url).subscribe(() => {
             this.isApiRootValid = true;
-            this.iaas.success('LabPipe server connected.', this.messages);
+            this.nzNotification.success('Success', 'LabPipe server connected.');
             this.us.setApiRoot(url);
             this.lps.loadApiRoot();
           }, (err) => {
             console.log(err);
-            this.iaas.error('Incorrect API root.', this.messages);
+            this.nzNotification.error('Error', 'Incorrect API root.');
             this.isApiRootValid = false;
           });
         }
@@ -98,13 +96,13 @@ export class MandatorySettingComponent implements OnInit {
         if (url && token && key) {
             this.lps.tokenAccess(token, key).subscribe(() => {
                     this.isApiTokenKeyValid = true;
-                    this.iaas.success('Access token is valid.', this.messages);
+                    this.nzNotification.success('Success', 'Access token is valid.');
                     this.us.setApiToken(token);
                     this.us.setApiKey(key);
                 },
                 (err) => {
                     console.log(err);
-                    this.iaas.error('Access token is not valid.', this.messages);
+                    this.nzNotification.error('Error', 'Access token is not valid.');
                     this.isApiTokenKeyValid = false;
                 });
         }
