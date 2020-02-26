@@ -3,7 +3,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TopNavigationComponent} from './top-navigation.component';
 import {ClarityModule} from '@clr/angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AppRoutingModule} from '../../app-routing.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ElectronService} from 'ngx-electron';
 

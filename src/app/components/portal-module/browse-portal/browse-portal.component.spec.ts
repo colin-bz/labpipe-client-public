@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BrowsePortalComponent } from './browse-portal.component';
+import {BrowsePortalComponent} from './browse-portal.component';
 
 describe('BrowsePortalComponent', () => {
   let component: BrowsePortalComponent;

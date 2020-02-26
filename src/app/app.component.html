@@ -1,15 +1,9 @@
-<!--<div class="main-container">-->
-<!--  <app-connection-monitor></app-connection-monitor>-->
-<!--  <div class="mx-2 my-2">-->
-<!--    <router-outlet></router-outlet>-->
-<!--  </div>-->
-<!--</div>-->
-
 <nz-layout>
   <nz-sider class="fullheight" nzCollapsible [(nzCollapsed)]="isCollapsed" nzWidth="200px">
     <app-top-navigation [isCollapsed]="isCollapsed"></app-top-navigation>
   </nz-sider>
   <nz-layout>
+    <app-connection-monitor></app-connection-monitor>
     <nz-content class="safe-margin">
       <router-outlet></router-outlet>
     </nz-content>

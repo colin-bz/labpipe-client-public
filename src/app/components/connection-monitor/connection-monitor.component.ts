@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {fromEvent, Observable, Subscription, timer} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 import {delay, retryWhen, switchMap, tap} from 'rxjs/operators';
-import {UserSettingsService} from '../../../services/user-settings.service';
-import {LabPipeService} from '../../../services/lab-pipe.service';
-import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {UserSettingsService} from '../../services/user-settings.service';
+import {LabPipeService} from '../../services/lab-pipe.service';
+import {TemporaryDataService} from '../../services/temporary-data.service';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-connection-monitor',
@@ -24,6 +24,7 @@ export class ConnectionMonitorComponent implements OnInit, OnDestroy {
 
   constructor(private us: UserSettingsService,
               private tds: TemporaryDataService,
+              private nzMessage: NzMessageService,
               private lps: LabPipeService) {
     this.networkConnected = window.navigator.onLine;
     this.onlineEvent = fromEvent(window, 'online');

@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, NgZone, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {ElectronService} from 'ngx-electron';
 import {QuestionBase} from '../../../models/dynamic-form-models/question-base';
 import {UserSettingsService} from '../../../services/user-settings.service';
 import {SelectQuestion} from '../../../models/dynamic-form-models/question-select';

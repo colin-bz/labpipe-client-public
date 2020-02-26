@@ -20,6 +20,7 @@
   },
   "build": {
     "appId": "org.labpipe.client",
+    "productName": "LabPipe Client",
     "files": [
       "**/*",
       "build/icon.*"

@@ -23,7 +23,8 @@
           <td>{{data.created | date: 'yyyy-MM-dd' }}</td>
           <td>{{data.uploaded_by}}</td>
           <td>
-            <button nz-button nzType="dashed" (click)="showRemoteReportModal(data, reportContent, reportFooter)">Preview</button></td>
+            <button nz-button nzType="dashed" (click)="showRemoteReportModal(data, reportContent, reportFooter)">Preview</button>
+          </td>
         </tr>
         <tr [nzExpand]="mapOfExpandRemoteData[data.id]">
           <td></td>
@@ -61,10 +62,13 @@
           <td>{{data.data.formIdentifier}}</td>
           <td>{{data.data.created | date: 'yyyy-MM-dd' }}</td>
           <td>{{data.data.saved_by}}</td>
+          <td>
+            <button nz-button nzType="dashed" (click)="upload(data)">Upload</button>
+          </td>
         </tr>
         <tr [nzExpand]="mapOfExpandLocalData[data.id]">
           <td></td>
-          <td colspan="5">
+          <td colspan="6">
             {{data | json}}
           </td>
         </tr>

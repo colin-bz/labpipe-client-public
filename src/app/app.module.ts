@@ -11,7 +11,7 @@ import {DynamicFormResultPreviewComponent} from './components/dynamic-form-modul
 import {DynamicSampleCollectionWizardComponent} from './components/dynamic-form-module/dynamic-sample-collection-wizard/dynamic-sample-collection-wizard.component';
 import {FreshStartupComponent} from './components/startup-module/fresh-startup/fresh-startup.component';
 import {PrepareLaunchComponent} from './components/startup-module/prepare-launch/prepare-launch.component';
-import {ConnectionMonitorComponent} from './components/monitor-module/connection-monitor/connection-monitor.component';
+import {ConnectionMonitorComponent} from './components/connection-monitor/connection-monitor.component';
 import {TaskPortalComponent} from './components/portal-module/task-portal/task-portal.component';
 import {TopNavigationComponent} from './components/navigation-sidebar-left/top-navigation.component';
 import {ElectronService} from 'ngx-electron';
@@ -23,11 +23,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ClarityModule, ClrIconModule} from '@clr/angular';
 import {StorageModule} from '@ngx-pwa/local-storage';
 import { ManagePortalComponent } from './components/portal-module/manage-portal/manage-portal.component';
-import { StatusBarComponent } from './components/status-bar/status-bar.component';
 import { BrowsePortalComponent } from './components/portal-module/browse-portal/browse-portal.component';
 import { TourComponent } from './components/tour/tour.component';
-import { MultipleSelectComponent } from './components/multiple-select/multiple-select.component';
-import { MultipleInputComponent } from './components/multiple-input/multiple-input.component';
 import { ProfilePortalComponent } from './components/portal-module/profile-portal/profile-portal.component';
 import { NgZorroAntdModule, NZ_I18N, en_GB } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
@@ -52,11 +49,8 @@ registerLocaleData(en);
     TopNavigationComponent,
     LoginPageComponent,
     ManagePortalComponent,
-    StatusBarComponent,
     BrowsePortalComponent,
     TourComponent,
-    MultipleSelectComponent,
-    MultipleInputComponent,
     ProfilePortalComponent
   ],
   imports: [

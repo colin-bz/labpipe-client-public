@@ -4,8 +4,7 @@ import {TaskPortalComponent} from './task-portal.component';
 import {ClarityModule} from '@clr/angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DynamicSampleCollectionWizardComponent} from '../../dynamic-form-module/dynamic-sample-collection-wizard/dynamic-sample-collection-wizard.component';
-import {HttpClientModule} from '@angular/common/http';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ElectronService} from 'ngx-electron';
 
 describe('TaskPortalComponent', () => {

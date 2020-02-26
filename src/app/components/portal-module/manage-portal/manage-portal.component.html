@@ -1,52 +1,54 @@
 <nz-tabset>
   <nz-tab nzTitle="Access Control">
-    <div nz-row nzType="flex" nzJustify="start" nzGutter="8">
-      <div nz-col>
-        <button nz-button nzType="default" (click)="addNewRecord('operator')">Operator</button></div>
-      <div nz-col>
-      <button nz-button nzType="default" (click)="addNewRecord('token')">Access Token</button></div>
-      <div nz-col>
-      <button nz-button nzType="default" (click)="addNewRecord('role')">Role</button></div>
-    </div>
+    <nz-card nzTitle="Add">
+      <div nz-row nzType="flex" nzJustify="start" nzGutter="8">
+        <div nz-col>
+          <button nz-button nzType="default" (click)="addNewRecord('operator')">Operator</button>
+        </div>
+        <div nz-col>
+          <button nz-button nzType="default" (click)="addNewRecord('token')">Access Token</button>
+        </div>
+        <div nz-col>
+          <button nz-button nzType="default" (click)="addNewRecord('role')">Role</button>
+        </div>
+      </div>
+    </nz-card>
   </nz-tab>
   <nz-tab nzTitle="Parameter">
-    <div class="card">
-      <div class="card-header">
-        Add
-      </div>
-      <div class="card-block">
-        <div class="card-text">
-          <button class="btn btn-primary-outline" (click)="addNewRecord('study')" disabled>Study</button>
-          <button class="btn btn-primary-outline" (click)="addNewRecord('location')">Location</button>
-          <button class="btn btn-primary-outline" (click)="addNewRecord('instrument')">Instrument</button>
+    <nz-card nzTitle="Add">
+      <div nz-row nzType="flex" nzJustify="start" nzGutter="8">
+        <div nz-col>
+          <button nz-col nz-button nzType="default" (click)="addNewRecord('study')" disabled>Study</button>
+        </div>
+        <div nz-col>
+          <button nz-button nzType="default" (click)="addNewRecord('location')">Location</button>
+        </div>
+        <div nz-col>
+          <button nz-button nzType="default" (click)="addNewRecord('instrument')">Instrument</button>
         </div>
       </div>
-    </div>
+    </nz-card>
   </nz-tab>
   <nz-tab nzTitle="Notification">
-    <div class="card">
-      <div class="card-header">
-        Add
-      </div>
-      <div class="card-block">
-        <div class="card-text">
-          <button class="btn btn-primary-outline" (click)="addNewRecord('email-group')">Email Group</button>
+    <nz-card nzTitle="Add">
+      <div nz-row nzType="flex" nzJustify="start" nzGutter="8">
+        <div nz-col>
+          <button nz-button nzType="default" (click)="addNewRecord('email-group')">Email Group</button>
         </div>
       </div>
-    </div>
+    </nz-card>
   </nz-tab>
   <nz-tab nzTitle="Form & Report">
-    <div class="card">
-      <div class="card-header">
-        Add
-      </div>
-      <div class="card-block">
-        <div class="card-text">
-          <button class="btn btn-primary-outline" disabled>Form Template</button>
-          <button class="btn btn-primary-outline" disabled>Report Template</button>
+    <nz-card nzTitle="Add">
+      <div nz-row nzType="flex" nzJustify="start" nzGutter="8">
+        <div nz-col>
+          <button nz-button nzType="default" disabled>Form Template</button>
+        </div>
+        <div nz-col>
+          <button nz-button nzType="default" disabled>Report Template</button>
         </div>
       </div>
-    </div>
+    </nz-card>
   </nz-tab>
 </nz-tabset>
 
@@ -71,20 +73,20 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-    <nz-form-label><strong>Study</strong></nz-form-label>
-    <nz-form-control>
-      <nz-select
-        [nzMaxTagCount]="3"
-        [nzMaxTagPlaceholder]="studyMaxTagPlaceHolder"
-        nzMode="multiple"
-        nzPlaceHolder="Please select"
-        formControlName="projects"
-      >
-        <nz-option *ngFor="let study of studies" [nzLabel]="study.name" [nzValue]="study.identifier"></nz-option>
-      </nz-select>
-      <ng-template #studyMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
-    </nz-form-control>
-  </nz-form-item>
+      <nz-form-label><strong>Study</strong></nz-form-label>
+      <nz-form-control>
+        <nz-select
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="studyMaxTagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Please select"
+          formControlName="projects"
+        >
+          <nz-option *ngFor="let study of studies" [nzLabel]="study.name" [nzValue]="study.identifier"></nz-option>
+        </nz-select>
+        <ng-template #studyMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected</ng-template>
+      </nz-form-control>
+    </nz-form-item>
     <nz-form-item>
       <nz-form-label><strong>Role</strong></nz-form-label>
       <nz-form-control>
@@ -97,7 +99,7 @@
         >
           <nz-option *ngFor="let role of roles" [nzLabel]="role.name" [nzValue]="role.identifier"></nz-option>
         </nz-select>
-        <ng-template #roleMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
+        <ng-template #roleMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected</ng-template>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -112,15 +114,18 @@
         >
           <nz-option *ngFor="let nfg of notificationGroups" [nzLabel]="nfg.name" [nzValue]="nfg.identifier"></nz-option>
         </nz-select>
-        <ng-template #emailGroupMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
+        <ng-template #emailGroupMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected
+        </ng-template>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-control>
-        <button nz-button (click)="onConfirm('operator', true, operatorForm)">Continue</button>
+        <button nz-button [disabled]="!operatorForm.valid" (click)="onConfirm('operator', true, operatorForm)">
+          Continue
+        </button>
       </nz-form-control>
     </nz-form-item>
-</form>
+  </form>
 </nz-drawer>
 
 <nz-drawer
@@ -134,98 +139,173 @@
   <button nz-button (click)="onConfirm('token', true, operatorForm)">Continue</button>
 </nz-drawer>
 
-<clr-modal [(clrModalOpen)]="showModal.newRole">
-  <h3 class="modal-title">Add new role</h3>
-  <div class="modal-body">
-    <form class="clr-form clr-form-vertical" [formGroup]="roleForm">
-      <clr-input-container>
-        <label>Identifier</label>
-        <input clrInput type="text" formControlName="identifier" required />
-      </clr-input-container>
-      <clr-input-container>
-        <label>Name</label>
-        <input clrInput type="text" formControlName="name" required />
-      </clr-input-container>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirm('role', false, roleForm)">Cancel</button>
-    <button class="btn btn-danger" type="button" [disabled]="!roleForm.valid" (click)="onConfirm('role', true, roleForm)">Continue</button>
-  </div>
-</clr-modal>
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="showModal.newRole"
+  nzPlacement="right"
+  nzTitle="New role"
+  (nzOnClose)="onConfirm('role', false, roleForm)"
+>
+  <form nz-form nzLayout="vertical" [formGroup]="roleForm">
+    <nz-form-item>
+      <nz-form-label><strong>Identifier</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="identifier" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Name</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="name" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button [disabled]="!roleForm.valid" (click)="onConfirm('role', true, roleForm)">Continue</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-drawer>
 
-<clr-modal [(clrModalOpen)]="showModal.newLocation">
-  <h3 class="modal-title">Add new role</h3>
-  <div class="modal-body">
-    <form class="clr-form clr-form-vertical" [formGroup]="locationForm">
-      <clr-input-container>
-        <label>Identifier</label>
-        <input clrInput type="text" formControlName="identifier" required />
-      </clr-input-container>
-      <clr-input-container>
-        <label>Name</label>
-        <input clrInput type="text" formControlName="name" required />
-      </clr-input-container>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirm('location', false, locationForm)">Cancel</button>
-    <button class="btn btn-danger" type="button" [disabled]="!locationForm.valid" (click)="onConfirm('location', true, locationForm)">Continue</button>
-  </div>
-</clr-modal>
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="showModal.newLocation"
+  nzPlacement="right"
+  nzTitle="New location"
+  (nzOnClose)="onConfirm('location', false, locationForm)"
+>
+  <form nz-form nzLayout="vertical" [formGroup]="locationForm">
+    <nz-form-item>
+      <nz-form-label><strong>Identifier</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="identifier" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Name</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="name" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button [disabled]="!locationForm.valid" (click)="onConfirm('location', true, locationForm)">
+          Continue
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-drawer>
 
-<clr-modal [(clrModalOpen)]="showModal.newInstrument">
-  <h3 class="modal-title">Add new instrument</h3>
-  <div class="modal-body">
-    <form class="clr-form clr-form-vertical" [formGroup]="instrumentForm">
-      <clr-input-container>
-        <label>Identifier</label>
-        <input clrInput type="text" formControlName="identifier" required />
-      </clr-input-container>
-      <clr-input-container>
-        <label>Name</label>
-        <input clrInput type="text" formControlName="name" required />
-      </clr-input-container>
-      <clr-toggle-container>
-        <label>Online instrument?</label>
-        <clr-checkbox-wrapper>
-          <input type="checkbox" clrToggle formControlName="realtime" />
-          <label>{{instrumentForm.get('realtime').value ? 'Yes' : 'No'}}</label>
-        </clr-checkbox-wrapper>
-      </clr-toggle-container>
-      <app-multiple-input title="File type" (valueChanged)="updateForm(instrumentForm, 'fileType', $event)"></app-multiple-input>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirm('instrument', false, instrumentForm)">Cancel</button>
-    <button class="btn btn-danger" type="button" [disabled]="!instrumentForm.valid" (click)="onConfirm('instrument', true, instrumentForm)">Continue</button>
-  </div>
-</clr-modal>
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="showModal.newInstrument"
+  nzPlacement="right"
+  nzTitle="New instrument"
+  (nzOnClose)="onConfirm('instrument', false, instrumentForm)"
+>
+  <form nz-form nzLayout="vertical" [formGroup]="instrumentForm">
+    <nz-form-item>
+      <nz-form-label><strong>Identifier</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="identifier" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Name</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="name" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Realtime data generation</strong></nz-form-label>
+      <nz-form-control>
+        <nz-switch formControlName="realtime" nzCheckedChildren="Yes" nzUnCheckedChildren="No"></nz-switch>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Data file type</strong></nz-form-label>
+      <nz-form-control nzExtra="You may enter a different file type if not listed.">
+        <nz-select nzMode="tags" formControlName="fileType">
+          <nz-option nzLabel="h5" nzValue="h5"></nz-option>
+          <nz-option nzLabel="csv" nzValue="csv"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button [disabled]="!instrumentForm.valid" (click)="onConfirm('instrument', true, instrumentForm)">
+          Continue
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-drawer>
 
-<clr-modal [(clrModalOpen)]="showModal.newEmailGroup">
-  <h3 class="modal-title">Add new email group</h3>
-  <div class="modal-body">
-    <form class="clr-form clr-form-vertical" [formGroup]="emailGroupForm">
-      <clr-input-container>
-        <label>Identifier</label>
-        <input clrInput type="text" formControlName="identifier" required />
-      </clr-input-container>
-      <clr-input-container>
-        <label>Name</label>
-        <input clrInput type="text" formControlName="name" required />
-      </clr-input-container>
-      <clr-select-container>
-        <label>Form</label>
-        <select clrSelect formControlName="formIdentifier" required>
-          <option *ngFor="let f of formTemplates" [ngValue]="f.identifier">{{f.name}}</option>
-        </select>
-      </clr-select-container>
-      <app-multiple-select id="groupadmin" title="Group administrator" [options]="operators" displayField="name" valueField="username" (valueChanged)="updateForm(emailGroupForm, 'admin', $event)"></app-multiple-select>
-      <app-multiple-select id="groupmember" title="Group member" [options]="operators" displayField="name" valueField="username" (valueChanged)="updateForm(emailGroupForm, 'member', $event)"></app-multiple-select>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirm('email-group', false, emailGroupForm)">Cancel</button>
-    <button class="btn btn-danger" type="button" [disabled]="!emailGroupForm.valid" (click)="onConfirm('email-group', true, emailGroupForm)">Continue</button>
-  </div>
-</clr-modal>
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="showModal.newEmailGroup"
+  nzPlacement="right"
+  nzTitle="New email group"
+  (nzOnClose)="onConfirm('email-group', false, emailGroupForm)"
+>
+  <form nz-form nzLayout="vertical" [formGroup]="emailGroupForm">
+    <nz-form-item>
+      <nz-form-label><strong>Identifier</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="identifier" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Name</strong></nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input formControlName="name" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>formIdentifier</strong></nz-form-label>
+      <nz-form-control>
+        <nz-select nzShowSearch nzAllowClear formControlName="formIdentifier">
+          <nz-option *ngFor="let f of formTemplates" [nzLabel]="f.identifier" [nzValue]="f.name"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Group administrators</strong></nz-form-label>
+      <nz-form-control>
+        <nz-select
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="groupAdminMaxTagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Please select"
+          formControlName="admin"
+        >
+          <nz-option *ngFor="let o of operators" [nzLabel]="o.name" [nzValue]="o.username"></nz-option>
+        </nz-select>
+        <ng-template #groupAdminMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected</ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label><strong>Group members</strong></nz-form-label>
+      <nz-form-control>
+        <nz-select
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="groupMemberMaxTagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Please select"
+          formControlName="member"
+        >
+          <nz-option *ngFor="let o of operators" [nzLabel]="o.name" [nzValue]="o.username"></nz-option>
+        </nz-select>
+        <ng-template #groupMemberMaxTagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected</ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button [disabled]="!emailGroupForm.valid" (click)="onConfirm('email-group', true, emailGroupForm)">
+          Continue
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-drawer>

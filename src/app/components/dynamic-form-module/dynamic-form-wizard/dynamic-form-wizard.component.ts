@@ -17,6 +17,7 @@ import {FileQuestion} from '../../../models/dynamic-form-models/question-file';
 import {LabPipeService} from '../../../services/lab-pipe.service';
 import {TemporaryDataService} from '../../../services/temporary-data.service';
 import {NzNotificationService} from 'ng-zorro-antd';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dynamic-form-wizard',
@@ -259,11 +260,13 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   }
 
   onStepChange(step: number) {
-
-    if (this.wizardTemplate.pages[this.currentStep].pageForm.valid) {
-
+    if (step === 0) {
+      this.currentStep = step;
+    } else {
+      const pages = _.take(this.wizardTemplate.pages, step + 1);
+      if (pages.every(p => p.pageForm.valid)) {
+        this.currentStep = step;
+      }
     }
-    this.currentStep = step;
-    console.log(this.currentStep);
   }
 }

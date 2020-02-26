@@ -28,7 +28,7 @@
       <i nz-icon nzType="user"></i>
       <span>{{currentUser.name}}</span>
     </li>
-    <li nz-menu-item *ngIf="currentUser" (click)="logout()">
+    <li nz-menu-item *ngIf="currentUser" nz-popconfirm nzPopconfirmTitle="Are you sure to log out?" (nzOnConfirm)="logout()">
       <i nz-icon nzType="logout"></i>
       <span>Logout</span>
     </li>

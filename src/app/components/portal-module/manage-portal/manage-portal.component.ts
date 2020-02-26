@@ -1,8 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Form, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LabPipeService} from '../../../services/lab-pipe.service';
 import {CollectionName, EmailGroup, FormTemplate, Operator, Role, Study} from '../../../models/parameter.model';
-import {MultipleSelectComponent} from '../../multiple-select/multiple-select.component';
 import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
@@ -31,10 +30,6 @@ export class ManagePortalComponent implements OnInit {
   emailGroupForm: FormGroup;
   formTemplateForm: FormGroup;
   reportTemplateForm: FormGroup;
-
-  @ViewChild('aosvc', {static: false}) aosvc: MultipleSelectComponent;
-  @ViewChild('aorvc', {static: false}) aorvc: MultipleSelectComponent;
-  @ViewChild('aoegvc', {static: false}) aoegvc: MultipleSelectComponent;
 
   studies: Study[] = [];
   roles: Role[] = [];
@@ -140,9 +135,6 @@ export class ManagePortalComponent implements OnInit {
         }
         this.showModal.newOperator = false;
         form.reset();
-        this.aosvc.clear();
-        this.aorvc.clear();
-        this.aoegvc.clear();
         break;
       case 'token':
         if (confirm) {
@@ -180,27 +172,5 @@ export class ManagePortalComponent implements OnInit {
         this.showModal.newEmailGroup = false;
         break;
     }
-  }
-
-  updateForm(form: FormGroup, field: string, event: any) {
-    // switch (form) {
-    //   case this.operatorForm:
-    //     switch (field) {
-    //       case 'projects':
-    //       case 'roles':
-    //       case 'notificationGroup':
-    //         form.get(field).setValue(event);
-    //         break;
-    //     }
-    //     break;
-    //   case this.instrumentForm:
-    //     switch (field) {
-    //       case 'fileType':
-    //         form.get(field).setValue(event);
-    //         break;
-    //     }
-    //     break;
-    // }
-    form.get(field).setValue(event);
   }
 }

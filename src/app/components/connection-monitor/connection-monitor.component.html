@@ -1,0 +1,8 @@
+<nz-alert *ngIf="!networkConnected" nzBanner nzType="error" [nzMessage]="noNetwork"></nz-alert>
+<ng-template #noNetwork>
+  <strong>[Local mode]</strong> No network connection. Please check your connection.
+</ng-template>
+<nz-alert *ngIf="networkConnected && !serverConnected" nzBanner nzType="error" [nzMessage]="noServer"></nz-alert>
+<ng-template #noServer>
+  <strong>[Local mode]</strong> Cannot connect to server. Please check your connection and api root setting.
+</ng-template>
