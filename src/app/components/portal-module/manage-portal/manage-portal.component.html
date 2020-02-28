@@ -110,7 +110,7 @@
           [nzMaxTagPlaceholder]="emailGroupMaxTagPlaceHolder"
           nzMode="multiple"
           nzPlaceHolder="Please select"
-          formControlName="roles"
+          formControlName="notificationGroup"
         >
           <nz-option *ngFor="let nfg of notificationGroups" [nzLabel]="nfg.name" [nzValue]="nfg.identifier"></nz-option>
         </nz-select>
