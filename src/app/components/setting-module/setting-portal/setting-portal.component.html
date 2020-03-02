@@ -13,7 +13,7 @@
       <nz-form-item>
         <nz-form-label><strong>Cache</strong></nz-form-label>
         <nz-form-control [nzExtra]="appCache">
-          <button nz-button nzType="danger" (click)="clearAppDataDirectory()">Clear cache</button>
+          <button nz-button nzType="danger" (click)="showClearCacheModal()">Clear cache</button>
         </nz-form-control>
         <ng-template #appCache>
           <nz-tag [nzColor]="'red'">You will lose all current settings.</nz-tag>
@@ -23,25 +23,7 @@
   </nz-tab>
 </nz-tabset>
 
-<clr-modal [(clrModalOpen)]="dialogClearCacheOpened">
-  <h3 class="modal-title">Confirm your action</h3>
-  <div class="modal-body">
-    <h4 class="text-danger">Are you sure you want to continue?</h4>
-    <p class="text-danger">You will lose all saved settings. Restart is required afterwards.</p>
-    <p class="text-primary">However, your data directory will not be affected.</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirmClearCache(false)">Cancel</button>
-    <button class="btn btn-danger" type="button" (click)="onConfirmClearCache(true)">Continue</button>
-  </div>
-</clr-modal>
-
-<clr-modal [(clrModalOpen)]="dialogRelaunchOpened">
-  <h3 class="modal-title">Application restarting</h3>
-  <div class="modal-body">
-    <p>Your application is now restarting.</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-danger" type="button" (click)="restart()">Restart</button>
-  </div>
-</clr-modal>
+<ng-template #clearCacheModalContent>
+  <nz-alert nzType="warning" nzMessage="You will lose all saved settings. LabPipe will restart automatically." nzShowIcon></nz-alert>
+  <nz-alert nzType="info" nzMessage="Your saved record data will not be affected." nzShowIcon></nz-alert>
+</ng-template>

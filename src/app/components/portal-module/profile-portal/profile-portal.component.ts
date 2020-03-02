@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {UserSettingsService} from '../../../services/user-settings.service';
 import {TemporaryDataService} from '../../../services/temporary-data.service';
 import {Operator} from '../../../models/parameter.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LabPipeService} from '../../../services/lab-pipe.service';
-import {NzNotificationService} from 'ng-zorro-antd';
+import {NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-profile-portal',
@@ -14,15 +14,14 @@ import {NzNotificationService} from 'ng-zorro-antd';
 export class ProfilePortalComponent implements OnInit {
   operator: Operator;
 
-  showModal = {
-    changePassword: false
-  };
-
   changePasswordForm: FormGroup;
+  changePasswordModal: NzModalRef;
+  @ViewChild('changePasswordModalContent', {static: false}) public changePasswordModalContent: TemplateRef<any>;
 
   constructor(private uss: UserSettingsService,
               private tds: TemporaryDataService,
               private lps: LabPipeService,
+              private nzModal: NzModalService,
               private nzNotification: NzNotificationService,
               private fb: FormBuilder) {
     this.changePasswordForm = this.fb.group({
@@ -36,28 +35,37 @@ export class ProfilePortalComponent implements OnInit {
     this.operator = this.tds.operator;
   }
 
-  changePassword() {
-    this.lps.updatePassword(this.changePasswordForm.get('confirm').value).subscribe((data: any) => {
-      this.tds.password = this.changePasswordForm.get('confirm').value;
-      this.nzNotification.success('Success', data.message);
-      },
-      (error: any) => {
-        this.nzNotification.error('Error', error.error.message);
-      },
-      () => this.showModal.changePassword = false);
+  showChangePasswordModal() {
+    this.changePasswordModal = this.nzModal.warning({
+      nzTitle: 'Change your password',
+      nzContent: this.changePasswordModalContent,
+      nzFooter: [
+        {
+          label: 'Back',
+          shape: 'default',
+          onClick: this.destroyChangePasswordModal
+        }],
+    });
   }
 
-onConfirm(target: string,   confirm: boolean, form: FormGroup) {
-  switch (target) {
-    case 'change-password':
-      if (confirm) {
-        this.changePassword();
-      } else {
-        form.reset();
-      }
-      this.showModal.changePassword = false;
-      break;
+  destroyChangePasswordModal() {
+    this.changePasswordModal.destroy();
+    this.changePasswordForm.reset();
   }
-}
+
+  changePassword() {
+    if (this.changePasswordForm.get('newPassword').value !== this.changePasswordForm.get('confirm').value) {
+      this.nzNotification.error('Error', 'Your new password does not match.');
+    } else {
+      this.lps.updatePassword(this.changePasswordForm.get('confirm').value).subscribe((data: any) => {
+          this.tds.password = this.changePasswordForm.get('confirm').value;
+          this.nzNotification.success('Success', data.message);
+        },
+        (error: any) => {
+          this.nzNotification.error('Error', error.error.message);
+        },
+        () => this.destroyChangePasswordModal);
+    }
+  }
 
 }

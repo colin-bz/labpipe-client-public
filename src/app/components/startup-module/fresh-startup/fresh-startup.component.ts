@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserSettingsService} from '../../../services/user-settings.service';
 import {Router} from '@angular/router';
 import {ElectronService} from 'ngx-electron';
+import {NzModalRef, NzModalService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-fresh-startup',
@@ -10,11 +11,12 @@ import {ElectronService} from 'ngx-electron';
 })
 export class FreshStartupComponent implements OnInit {
   isRegularStartup: boolean;
-  dialogRequireRestartOpened: boolean;
-  dialogRestartOpened: boolean;
+
+  requireRestartModal: NzModalRef;
 
   constructor(private us: UserSettingsService,
               private es: ElectronService,
+              private nzModal: NzModalService,
               private router: Router) {
   }
 
@@ -28,16 +30,15 @@ export class FreshStartupComponent implements OnInit {
     }
   }
 
-  onConfirmRestart(confirm) {
-    if (confirm) {
-      this.dialogRequireRestartOpened = false;
-      this.dialogRestartOpened = true;
-      this.isRegularStartup = true;
-      this.us.setStartupMode(this.isRegularStartup);
-      this.restart();
-    } else {
-      this.dialogRequireRestartOpened = false;
-    }
+  showRequireRestartModal() {
+    this.requireRestartModal = this.nzModal.confirm({
+      nzTitle: 'LabPipe requires restart',
+      nzContent: 'For your settings to take effect, LabPipe will restart itself now.',
+      nzOnOk: () => {
+        this.us.setStartupMode(this.isRegularStartup);
+        this.restart();
+      }
+    });
   }
 
   restart() {
@@ -48,7 +49,7 @@ export class FreshStartupComponent implements OnInit {
 
   continueLaunch() {
     if (this.us.getDataDirectory() && this.us.getApiToken() && this.us.getApiKey()) {
-      this.dialogRequireRestartOpened = true;
+      this.showRequireRestartModal();
     }
   }
 

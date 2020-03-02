@@ -20,28 +20,32 @@
     </nz-list>
   </nz-descriptions-item>
 </nz-descriptions>
-<button nz-button nzType="danger" class="m-t-5" (click)="showModal.changePassword = true">Change password</button>
+<button nz-button nzType="danger" class="m-t-5" (click)="showChangePasswordModal()">Change password</button>
 
-<clr-modal [(clrModalOpen)]="showModal.changePassword">
-  <h3 class="modal-title">Change password</h3>
-  <div class="modal-body">
-    <form class="clr-form clr-form-vertical" [formGroup]="changePasswordForm">
-      <clr-password-container>
-        <label>Current password</label>
-        <input clrPassword formControlName="current" required/>
-      </clr-password-container>
-      <clr-password-container>
-        <label>New password</label>
-        <input clrPassword formControlName="newPassword" required/>
-      </clr-password-container>
-      <clr-password-container>
-        <label>Confirm new password</label>
-        <input clrPassword formControlName="confirm" required/>
-      </clr-password-container>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirm('change-password', false, changePasswordForm)">Cancel</button>
-    <button class="btn btn-danger" type="button" [disabled]="!changePasswordForm.valid" (click)="onConfirm('change-password', true, changePasswordForm)">Continue</button>
-  </div>
-</clr-modal>
+<ng-template #changePasswordModalContent>
+  <form nz-form [formGroup]="changePasswordForm" [nzLayout]="'vertical'">
+    <nz-form-item>
+      <nz-form-label>Current password</nz-form-label>
+      <nz-form-control>
+        <input type="password" nz-input formControlName="current" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label>New password</nz-form-label>
+      <nz-form-control>
+        <input type="password" nz-input formControlName="newPassword" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label>Confirm new password</nz-form-label>
+      <nz-form-control>
+        <input type="password" nz-input formControlName="confirm" required/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="danger" [disabled]="!changePasswordForm.valid" (click)="changePassword()">Change Password</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</ng-template>

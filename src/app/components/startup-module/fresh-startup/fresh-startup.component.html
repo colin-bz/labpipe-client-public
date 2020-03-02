@@ -3,25 +3,3 @@
     <app-mandatory-setting></app-mandatory-setting>
     <button class="btn btn-primary mt-5" (click)="continueLaunch()">Continue</button>
 </div>
-
-<clr-modal [(clrModalOpen)]="dialogRequireRestartOpened">
-  <h3 class="modal-title">Confirm your action</h3>
-  <div class="modal-body">
-    <h4 class="text-danger">Are you sure you want to continue?</h4>
-    <p class="text-danger">In order for your settings to take effect, the application will restart itself now.</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" type="button" (click)="onConfirmRestart(false)">Cancel</button>
-    <button class="btn btn-danger" type="button" (click)="onConfirmRestart(true)">Continue</button>
-  </div>
-</clr-modal>
-
-<clr-modal [(clrModalOpen)]="dialogRestartOpened">
-  <h3 class="modal-title">Application restarting</h3>
-  <div class="modal-body">
-    <p>Your application is now restarting.</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-danger" type="button" (click)="restart()">Restart</button>
-  </div>
-</clr-modal>

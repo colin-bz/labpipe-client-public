@@ -24,7 +24,6 @@ import {ClarityModule, ClrIconModule} from '@clr/angular';
 import {StorageModule} from '@ngx-pwa/local-storage';
 import { ManagePortalComponent } from './components/portal-module/manage-portal/manage-portal.component';
 import { BrowsePortalComponent } from './components/portal-module/browse-portal/browse-portal.component';
-import { TourComponent } from './components/tour/tour.component';
 import { ProfilePortalComponent } from './components/portal-module/profile-portal/profile-portal.component';
 import { NgZorroAntdModule, NZ_I18N, en_GB } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
@@ -50,7 +49,6 @@ registerLocaleData(en);
     LoginPageComponent,
     ManagePortalComponent,
     BrowsePortalComponent,
-    TourComponent,
     ProfilePortalComponent
   ],
   imports: [

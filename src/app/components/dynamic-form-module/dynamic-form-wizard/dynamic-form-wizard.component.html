@@ -3,8 +3,10 @@
     <ng-container *ngIf="isFormReady">
 <!--      <button nz-button nzType="danger" [disabled]="!this.result" (click)="saveResult()">Save record</button>-->
       <nz-steps [nzCurrent]="currentStep" (nzIndexChange)="onStepChange($event)">
+        <nz-affix>
         <nz-step *ngFor="let wizardPage of wizardTemplate.pages">
         </nz-step>
+        </nz-affix>
       </nz-steps>
       <div class="steps-content">
         <div nz-row nzType="flex" nzJustify="center">
@@ -13,78 +15,89 @@
         <div nz-row nzType="flex" nzJustify="center">
           <h5 nz-col>{{wizardTemplate.pages[currentStep].navTitle}}</h5>
         </div>
-        <div nz-row nzType="flex" nzJustify="center">
-          <form nz-form nz-col nzSpan="20" *ngIf="isFormVisible" [nzLayout]="'vertical'"
-                [formGroup]="wizardTemplate.pages[currentStep].pageForm">
-            <ng-container *ngFor="let question of wizardTemplate.pages[currentStep].questions">
-              <app-dynamic-form-question [form]="wizardTemplate.pages[currentStep].pageForm" [qBase]="question"
-                                         (qValue)="onQuestionValue(wizardTemplate.pages[currentStep], question.key, $event)"></app-dynamic-form-question>
-            </ng-container>
-          </form>
-        </div>
-        <div nz-row nzType="flex" nzJustify="center" *ngIf="wizardTemplate.pages[currentStep].formValidProcess.length > 0">
-          <nz-table #formProcess [nzData]="wizardTemplate.pages[currentStep].formValidProcess">
-            <thead>
-            <tr>
-              <th>Process</th>
-              <th>New field</th>
-              <th>Result</th>
-              <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let process of formProcess.data; let i = index">
-              <td>{{process.processType}}</td>
-              <td>{{process.newField}}</td>
-              <td>
-                <ng-container [ngSwitch]="process.processType">
-                  <ng-container *ngSwitchDefault>
-                    {{process.result}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'file-copy'">
+        <ng-container *ngIf="currentStep < wizardTemplate.pages.length - 1; else lastStep">
+          <div nz-row nzType="flex" nzJustify="center">
+            <form nz-form nz-col nzSpan="20" *ngIf="isFormVisible" [nzLayout]="'vertical'"
+                  [formGroup]="wizardTemplate.pages[currentStep].pageForm">
+              <ng-container *ngFor="let question of wizardTemplate.pages[currentStep].questions">
+                <app-dynamic-form-question [form]="wizardTemplate.pages[currentStep].pageForm" [qBase]="question"
+                                           (qValue)="onQuestionValue(wizardTemplate.pages[currentStep], question.key, $event)"></app-dynamic-form-question>
+              </ng-container>
+            </form>
+          </div>
+          <div nz-row nzType="flex" nzJustify="center" *ngIf="wizardTemplate.pages[currentStep].formValidProcess.length > 0">
+            <nz-table #formProcess [nzData]="wizardTemplate.pages[currentStep].formValidProcess">
+              <thead>
+              <tr>
+                <th>Process</th>
+                <th>New field</th>
+                <th>Result</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let process of formProcess.data; let i = index">
+                <td>{{process.processType}}</td>
+                <td>{{process.newField}}</td>
+                <td>
+                  <ng-container [ngSwitch]="process.processType">
+                    <ng-container *ngSwitchDefault>
+                      {{process.result}}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'file-copy'">
                                       <span *ngIf="process.result">
                                       {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} copied
                                       </span>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'file-rename'">
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'file-rename'">
                                       <span *ngIf="process.result">
                                       {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} renamed
                                       </span>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'folder-watch'">
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'folder-watch'">
                                       <span *ngIf="process.result">
                                       {{process.result.length}} file{{process.result.length > 1 ? 's' : ''}} detected
                                       </span>
+                    </ng-container>
                   </ng-container>
-                </ng-container>
-              </td>
-              <td>
-                <button nz-button nzType="primary" *ngIf="!process.auto"
-                        (click)="activateProcess(wizardTemplate.pages[currentStep], process, i)">Activate
-                </button>
-                <nz-divider nzType="vertical"></nz-divider>
-                <button nz-button nzType="primary" *ngIf="process.allowCopy && process.result"
-                        (click)="clipboardCopy(process.result)">Copy
-                </button>
-              </td>
-            </tr>
-            </tbody>
-          </nz-table>
-        </div>
+                </td>
+                <td>
+                  <button nz-button nzType="primary" *ngIf="!process.auto"
+                          (click)="activateProcess(wizardTemplate.pages[currentStep], process, i)">Activate
+                  </button>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <button nz-button nzType="primary" *ngIf="process.allowCopy && process.result"
+                          (click)="clipboardCopy(process.result)">Copy
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </ng-container>
+        <ng-template #lastStep>
+          <nz-result nzStatus="warning" nzTitle="Your record has not been saved yet.">
+            <div nz-result-extra>
+              <p>Please review your record data before saving.</p>
+              <nz-divider nzText="Preview"></nz-divider>
+              <app-dynamic-form-result-preview #formDataPreview [data]="result?.record"></app-dynamic-form-result-preview>
+            </div>
+          </nz-result>
+        </ng-template>
       </div>
-      <div nz-row nzType="flex" nzJustify="center">
-          <div nz-col class="steps-action">
-            <button nz-button nzType="default" (click)="stepBack()" *ngIf="currentStep > 0">
+      <div class="steps-action">
+      <div nz-row nzType="flex" nzJustify="center" [nzGutter]="8">
+            <nz-col><button nz-button (click)="stepBack()" *ngIf="currentStep > 0">
               <span>Previous</span>
-            </button>
-            <button nz-button nzType="default" (click)="stepNext()" *ngIf="currentStep < wizardTemplate.pages.length"
-                    [disabled]="!wizardTemplate.pages[currentStep].pageForm.valid">
+            </button></nz-col>
+            <nz-col><button nz-button (click)="stepNext()" *ngIf="currentStep < wizardTemplate.pages.length - 1"
+                            [disabled]="!wizardTemplate.pages[currentStep].pageForm.valid">
               <span>Next</span>
-            </button>
-            <button nz-button nzType="primary" (click)="stepDone()" *ngIf="currentStep + 1 === wizardTemplate.pages.length"
-                    [disabled]="!wizardTemplate.pages[currentStep].pageForm.valid">
-              <span>Done</span>
-            </button>
+            </button></nz-col>
+            <nz-col><button nz-button nzType="primary" (click)="stepDone()" *ngIf="currentStep + 1 === wizardTemplate.pages.length"
+                            [disabled]="!wizardTemplate.pages[currentStep].pageForm.valid">
+              <span>Save record</span>
+            </button></nz-col>
           </div>
       </div>
     </ng-container>
@@ -95,53 +108,25 @@
   </div>
 </div>
 
-<clr-modal [(clrModalOpen)]="showMultipleFormCodeDialog" [clrModalClosable]="false">
-  <h3 class="modal-title">Multiple forms available</h3>
-  <div class="modal-body">
-    <clr-select-container>
-      <label>Select a form</label>
-      <select clrSelect [(ngModel)]="formCode" required>
-        <option *ngFor="let f of formTemplates" [ngValue]="f.identifier">[{{f.identifier}}] {{f.name}}</option>
-      </select>
-      <clr-control-helper>Select a form to continue</clr-control-helper>
-    </clr-select-container>
-    <br>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" (click)="getFormTemplateWithCode()">OK</button>
-  </div>
-</clr-modal>
+<ng-template #multiFormModalContent>
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-label nzFor="location"><strong>Location</strong></nz-form-label>
+      <nz-form-control nzExtra="Select a form to continue">
+        <nz-select id="location" nzShowSearch nzAllowClear [(ngModel)]="formCode" [ngModelOptions]="{standalone: true}" required>
+          <nz-option *ngFor="let f of formTemplates"  nzLabel="{{f.identifier}}" [nzValue]="f.identifier"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</ng-template>
 
-<clr-modal [(clrModalOpen)]="showNoFormDialog" [clrModalClosable]="false">
-  <h3 class="modal-title">No form available</h3>
-  <div class="modal-body">
-    <p>No form is not available yet for your current instrument in this study.</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" (click)="toPortal()">Go back to Portal</button>
-  </div>
-</clr-modal>
-
-<clr-modal [(clrModalOpen)]="showSavedDialog" [clrModalClosable]="false">
-  <h3 class="modal-title">Record saved</h3>
-  <div class="modal-body">
-    <p>Your record has been:</p>
-    <ul>
-      <li>
-        <clr-icon shape="check" class="is-success"></clr-icon>
-        saved locally
-      </li>
-      <li>
-        <clr-icon shape="info-circle" [attr.shape]="sentToServer? 'check' : 'times'"
-                  [ngClass]="{'is-success': sentToServer, 'is-error': !sentToServer}"></clr-icon>
-        {{ sentToServer ? '' : 'NOT'}} sent to the server
-      </li>
-    </ul>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" (click)="toPortal()">Continue</button>
-  </div>
-</clr-modal>
+<ng-template #saveModalContent>
+  <nz-descriptions nzBordered [nzColumn]="1">
+    <nz-descriptions-item nzTitle="Saved to server"><i nz-icon [nzType]="sentToServer ? 'check-circle' : 'close-circle'" nzTheme="fill"></i></nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Saved locally"><i nz-icon nzType="check-circle" nzTheme="fill"></i></nz-descriptions-item>
+  </nz-descriptions>
+</ng-template>
 
 
 

@@ -1,4 +1,4 @@
-import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, NgZone, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {DynamicFormResultPreviewComponent} from '../dynamic-form-result-preview/dynamic-form-result-preview.component';
@@ -16,7 +16,7 @@ import {TrueFalseQuestion} from '../../../models/dynamic-form-models/question-tr
 import {FileQuestion} from '../../../models/dynamic-form-models/question-file';
 import {LabPipeService} from '../../../services/lab-pipe.service';
 import {TemporaryDataService} from '../../../services/temporary-data.service';
-import {NzNotificationService} from 'ng-zorro-antd';
+import {NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import * as _ from 'lodash';
 
 @Component({
@@ -42,10 +42,12 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   result: any;
   formData: any;
   @ViewChild('formDataPreview', {static: false}) formDataPreview: DynamicFormResultPreviewComponent;
+  @ViewChild('multiFormModalContent', {static: false}) public multiFormModalContent: TemplateRef<any>;
+  @ViewChild('saveModalContent', {static: false}) public saveModalContent: TemplateRef<any>;
 
-  showMultipleFormCodeDialog: boolean;
-  showNoFormDialog: boolean;
-  showSavedDialog: boolean;
+  noFormModal: NzModalRef;
+  multiFormModal: NzModalRef;
+  saveModal: NzModalRef;
 
   sentToServer: boolean;
 
@@ -59,6 +61,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
               private tds: TemporaryDataService,
               private nzNotification: NzNotificationService,
               private zone: NgZone,
+              private nzModal: NzModalService,
               private http: HttpClient,
               private router: Router) {
     this.formTemplates = [];
@@ -81,13 +84,13 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
         this.formTemplates = data;
         switch (this.formTemplates.length) {
           case 0:
-            this.showNoFormDialog = true;
+            this.showNoFormModal();
             break;
           case 1:
             this.prepareForm(this.formTemplates[0]);
             break;
           default:
-            this.showMultipleFormCodeDialog = true;
+            this.showMultiFormModal();
             break;
         }
       },
@@ -97,22 +100,59 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
         this.formTemplates = this.us.getForm(this.study.identifier, this.instrument.identifier);
         switch (this.formTemplates.length) {
           case 0:
-            this.showNoFormDialog = true;
+            this.showNoFormModal();
             break;
           case 1:
             this.prepareForm(this.formTemplates[0]);
             break;
           default:
-            this.showMultipleFormCodeDialog = true;
+            this.showMultiFormModal();
             break;
         }
       }
     );
   }
 
+  showNoFormModal() {
+    this.noFormModal = this.nzModal.error({
+      nzTitle: 'No form available',
+      nzContent: 'No form is not available yet for your current instrument in this study.',
+      nzOnOk: () => {
+        this.noFormModal.destroy();
+        this.toPortal();
+      }
+    });
+  }
+
+  showMultiFormModal() {
+    this.multiFormModal = this.nzModal.confirm({
+      nzTitle: 'Multiple forms available',
+      nzContent: this.multiFormModalContent,
+      nzOnOk: () => {
+        this.multiFormModal.destroy();
+        this.getFormTemplateWithCode();
+      },
+      nzOnCancel: () => {
+        this.multiFormModal.destroy();
+        this.toPortal();
+      }
+    });
+  }
+
+  showSavedModal() {
+    this.saveModal = this.nzModal.success({
+      nzTitle: 'Record saved',
+      nzContent: this.saveModalContent,
+      nzOnOk: () => {
+        this.saveModal.destroy();
+        this.toPortal();
+      }
+    });
+  }
+
   getFormTemplateWithCode() {
     if (this.formCode) {
-      this.showMultipleFormCodeDialog = false;
+      this.showMultiFormModal();
       this.lps.getFormWithIdentifier(this.formCode).subscribe((data: any) => {
           this.nzNotification.success('Success', 'Form loaded. Preparation in progress.');
           this.us.setForm(data);
@@ -124,7 +164,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
           if (data) {
             this.prepareForm(data);
           } else {
-            this.showNoFormDialog = true;
+            this.showNoFormModal();
           }
         }
       );
@@ -173,6 +213,9 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
       p.formValidProcess = p.formValidProcess.sort((a, b) => a.order - b.order);
       this.wizardTemplate.pages.push(p);
     });
+    this.wizardTemplate.pages.push(
+      new WizardPage({key: 'preview', title: 'Preview', navTitle: 'Check your data before saving', order: 9999})
+    );
     this.wizardTemplate.pages = this.wizardTemplate.pages.sort((a, b) => a.order - b.order);
     if (this.wizardTemplate) {
       this.wizardTemplate.pages.forEach((page, index) =>
@@ -228,7 +271,7 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
     } else {
       this.sentToServer = false;
     }
-    this.showSavedDialog = true;
+    this.showSavedModal();
   }
 
   clipboardCopy(value: any) {
@@ -237,8 +280,6 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   }
 
   toPortal() {
-    this.showNoFormDialog = false;
-    this.showSavedDialog = false;
     this.tds.resetTask();
     this.router.navigate(['tasks']);
   }
@@ -249,14 +290,17 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
 
   stepNext() {
     this.currentStep += 1;
+    if (this.currentStep + 1 === this.wizardTemplate.pages.length) {
+      this.result = this.formData;
+      this.formDataPreview.updateResult();
+      this.nzNotification.warning('Not saved',
+        'Please note that your collection record has not yet been saved. ' +
+        'Please review the data before saving.');
+    }
   }
 
   stepDone() {
-    this.result = this.formData;
-    this.formDataPreview.updateResult();
-    this.nzNotification.warning('Not saved',
-      'Please note that your collection record has not yet been saved. ' +
-      'Please review the data before saving.');
+    this.saveResult();
   }
 
   onStepChange(step: number) {
