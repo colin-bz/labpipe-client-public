@@ -3,10 +3,8 @@
     <ng-container *ngIf="isFormReady">
 <!--      <button nz-button nzType="danger" [disabled]="!this.result" (click)="saveResult()">Save record</button>-->
       <nz-steps [nzCurrent]="currentStep" (nzIndexChange)="onStepChange($event)">
-        <nz-affix>
         <nz-step *ngFor="let wizardPage of wizardTemplate.pages">
         </nz-step>
-        </nz-affix>
       </nz-steps>
       <div class="steps-content">
         <div nz-row nzType="flex" nzJustify="center">
@@ -102,10 +100,6 @@
       </div>
     </ng-container>
   </nz-spin>
-  <div *ngIf="result" class="form-row">
-    <h5 class="text-primary">Preview your data</h5>
-    <app-dynamic-form-result-preview #formDataPreview [data]="result?.record"></app-dynamic-form-result-preview>
-  </div>
 </div>
 
 <ng-template #multiFormModalContent>

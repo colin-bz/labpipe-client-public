@@ -28,6 +28,7 @@ import { ProfilePortalComponent } from './components/portal-module/profile-porta
 import { NgZorroAntdModule, NZ_I18N, en_GB } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+import { EmailGroupManagerComponent } from './components/server-manager/email-group-manager/email-group-manager.component';
 
 registerLocaleData(en);
 
@@ -49,7 +50,8 @@ registerLocaleData(en);
     LoginPageComponent,
     ManagePortalComponent,
     BrowsePortalComponent,
-    ProfilePortalComponent
+    ProfilePortalComponent,
+    EmailGroupManagerComponent
   ],
   imports: [
     BrowserModule,
