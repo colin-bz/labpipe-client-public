@@ -24,7 +24,7 @@ export class SettingPortalComponent implements OnInit {
   ngOnInit() {
     const app = this.es.remote.app;
     const path = this.es.remote.require('path');
-    this.appCachePath = path.join(app.getPath('appData'), app.getName());
+    this.appCachePath = path.join(app.getPath('appData'), app.name);
     console.log(app.getAppPath());
   }
 

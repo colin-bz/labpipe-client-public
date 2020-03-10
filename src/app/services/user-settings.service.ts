@@ -23,11 +23,6 @@ export class UserSettingsService {
     private es: ElectronService
   ) {
     this.setting = this.es.remote.require('electron-settings');
-    this.crypto = this.es.remote.require('crypto');
-    this.iv = this.crypto.randomBytes(16);
-    this.key = this.crypto.scryptSync(this.password, 'pikapika', 32);
-    this.cipher = this.crypto.createCipheriv(this.algorithm, this.key, this.iv);
-    this.decipher = this.crypto.createDecipheriv(this.algorithm, this.key, this.iv);
     this.path = this.es.remote.require('path');
     this.fs = this.es.remote.require('fs-extra');
   }

@@ -1,4 +1,6 @@
-<div style="text-align: center">
-  <h1 class="display-1"><i class="far fa-grin"></i></h1>
-  <h1 class="display-1">Loading...</h1>
-</div>
+<nz-result nzTitle="Loading" [nzIcon]="loadingIcon" nzSubTitle="LabPipe is retrieving parameters...">
+
+</nz-result>
+<ng-template #loadingIcon>
+  <i nz-icon [nzType]="'loading'"></i>
+</ng-template>

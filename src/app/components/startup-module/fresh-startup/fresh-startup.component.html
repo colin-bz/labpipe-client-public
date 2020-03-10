@@ -1,5 +1,10 @@
-<div *ngIf="!isRegularStartup">
-    <h1>First use mandatory settings</h1>
-    <app-mandatory-setting></app-mandatory-setting>
-    <button class="btn btn-primary mt-5" (click)="continueLaunch()">Continue</button>
-</div>
+<ng-container *ngIf="!isRegularStartup">
+  <nz-result nzStatus="warning" nzTitle="Settings below are required for first startup">
+    <div nz-result-content>
+      <app-mandatory-setting></app-mandatory-setting>
+    </div>
+  </nz-result>
+  <div nz-result-extra>
+    <button nz-button nzType="danger" (click)="continueLaunch()">Continue</button>
+  </div>
+</ng-container>

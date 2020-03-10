@@ -1,1 +1,28 @@
-<p>email-group-manager works!</p>
+<nz-spin [nzSpinning]="tableReady">
+  <nz-table *ngIf="operators"
+    #operatorTable
+    nzShowPagination
+    nzShowSizeChanger
+    [nzData]="operators"
+  >
+    <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Username</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let operator of operatorTable.data">
+      <td
+        nzShowCheckbox
+        [(nzChecked)]="checkedId[operator.username]"
+      ></td>
+      <td>{{ operator.name }}</td>
+      <td>{{ operator.email }}</td>
+      <td>{{ operator.username }}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-spin>

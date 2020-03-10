@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserSettingsService} from 'src/app/services/user-settings.service';
-import {TemporaryDataService} from '../../services/temporary-data.service';
+import {ShareDataService} from '../../services/share-data.service';
+import {SettingService} from '../../services/setting.service';
 
 @Component({
   selector: 'app-top-navigation',
@@ -12,12 +13,14 @@ export class TopNavigationComponent implements OnInit, OnChanges {
   @Input() isCollapsed: boolean;
   currentUser: any;
 
-  constructor(private router: Router, private us: UserSettingsService, private tds: TemporaryDataService) {
-    this.router.events.subscribe(() => {this.currentUser = this.tds.operator; });
+  constructor(private router: Router,
+              private us: UserSettingsService,
+              private ss: SettingService,
+              private tds: ShareDataService) {
+    this.tds.operator.subscribe(value => this.currentUser = value);
   }
 
   ngOnInit() {
-    this.currentUser = this.tds.operator;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -31,7 +34,7 @@ export class TopNavigationComponent implements OnInit, OnChanges {
 
   logout() {
     this.tds.resetLogin();
-    this.router.navigate(['login-page']);
+    this.router.navigate(['user-login']);
   }
 
   toTasks() {
@@ -61,7 +64,7 @@ export class TopNavigationComponent implements OnInit, OnChanges {
 
   toLogin() {
     this.tds.resetLogin();
-    this.router.navigate(['login-page']);
+    this.router.navigate(['user-login']);
   }
 
   toFreshStartUp() {

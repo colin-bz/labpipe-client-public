@@ -3,7 +3,7 @@ import {fromEvent, Observable, Subscription, timer} from 'rxjs';
 import {delay, retryWhen, switchMap, tap} from 'rxjs/operators';
 import {UserSettingsService} from '../../services/user-settings.service';
 import {LabPipeService} from '../../services/lab-pipe.service';
-import {TemporaryDataService} from '../../services/temporary-data.service';
+import {ShareDataService} from '../../services/share-data.service';
 import {NzMessageService} from 'ng-zorro-antd';
 
 @Component({
@@ -23,7 +23,7 @@ export class ConnectionMonitorComponent implements OnInit, OnDestroy {
   url: string;
 
   constructor(private us: UserSettingsService,
-              private tds: TemporaryDataService,
+              private tds: ShareDataService,
               private nzMessage: NzMessageService,
               private lps: LabPipeService) {
     this.networkConnected = window.navigator.onLine;
@@ -58,7 +58,7 @@ export class ConnectionMonitorComponent implements OnInit, OnDestroy {
     this.networkDisconnectedStateSubscription = this.offlineEvent.subscribe(() => {
       this.networkConnected = false;
       console.log('No internet connection');
-      this.tds.connected = false;
+      this.tds.connected.next(false);
       this.monitorServerState();
     });
   }
@@ -72,7 +72,7 @@ export class ConnectionMonitorComponent implements OnInit, OnDestroy {
                 errors.pipe(
                     tap(() => {
                       this.serverConnected = false;
-                      this.tds.connected = false;
+                      this.tds.connected.next(false);
                       console.log('No server connection');
                     }),
                     delay(this.us.getServerMonitorRetryInterval())
@@ -82,7 +82,7 @@ export class ConnectionMonitorComponent implements OnInit, OnDestroy {
         .subscribe(() => {
           this.serverConnected = true;
           console.log('Connected to server');
-          this.tds.connected = true;
+          this.tds.connected.next(true);
         });
     }
   }

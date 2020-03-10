@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LabPipeService} from '../../../services/lab-pipe.service';
 import {CollectionName, EmailGroup, FormTemplate, Operator, Role, Study} from '../../../models/parameter.model';
 import {NzNotificationService} from 'ng-zorro-antd';
+import {ShareDataService} from '../../../services/share-data.service';
 
 @Component({
   selector: 'app-manage-portal',
@@ -10,6 +11,8 @@ import {NzNotificationService} from 'ng-zorro-antd';
   styleUrls: ['./manage-portal.component.css']
 })
 export class ManagePortalComponent implements OnInit {
+
+  connected: boolean;
 
   showModal = {
     newOperator: false,
@@ -37,7 +40,13 @@ export class ManagePortalComponent implements OnInit {
   operators: Operator[] = [];
   formTemplates: FormTemplate[] = [];
 
-  constructor(private formBuilder: FormBuilder, private lps: LabPipeService, private nzNotification: NzNotificationService) {
+  loadingEmailGroup: boolean;
+
+  constructor(private formBuilder: FormBuilder,
+              private lps: LabPipeService,
+              private sds: ShareDataService,
+              private nzNotification: NzNotificationService) {
+    this.sds.connected.subscribe(value => this.connected = value);
     this.operatorForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -129,9 +138,9 @@ export class ManagePortalComponent implements OnInit {
     switch (target) {
       case 'operator':
         if (confirm) {
-            this.lps.addOperator(form.value)
-              .subscribe((data: any) => this.nzNotification.success('Success', data.message),
-                (error: any) => this.nzNotification.error('Error', error.error.message));
+          this.lps.addOperator(form.value)
+            .subscribe((data: any) => this.nzNotification.success('Success', data.message),
+              (error: any) => this.nzNotification.error('Error', error.error.message));
         }
         this.showModal.newOperator = false;
         form.reset();
@@ -172,5 +181,9 @@ export class ManagePortalComponent implements OnInit {
         this.showModal.newEmailGroup = false;
         break;
     }
+  }
+
+  manageCurrentEmailGroup() {
+    this.lps.getParameter(CollectionName.EMAIL_GROUPS, true)
   }
 }

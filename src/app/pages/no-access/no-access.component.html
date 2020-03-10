@@ -1,0 +1,15 @@
+<nz-result nzStatus="403" nzTitle="403" nzSubTitle="Sorry, you are not authorized to access this page.">
+  <div nz-result-extra>
+    <nz-row nzType="flex" nzJustify="center" nzAlign="middle" nzGutter="8">
+      <nz-col>
+        <a nz-button nzType="primary" routerLink="/tasks">Back to Task Portal</a>
+      </nz-col>
+      <nz-col>
+        or
+      </nz-col>
+      <nz-col>
+        <button nz-button nzType="primary" (click)="logout()">Sign Out</button>
+      </nz-col>
+    </nz-row>
+  </div>
+</nz-result>

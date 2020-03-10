@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {DatabaseService} from '../../../services/database.service';
 import {forkJoin} from 'rxjs';
 import {LabPipeService} from '../../../services/lab-pipe.service';
-import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {SettingService} from '../../../services/setting.service';
 
 @Component({
   selector: 'app-prepare-launch',
@@ -16,8 +16,8 @@ export class PrepareLaunchComponent implements OnInit {
   parameterList: string[] = [];
 
   constructor(private lps: LabPipeService, private us: UserSettingsService,
-              private tds: TemporaryDataService,
               private ds: DatabaseService,
+              private ss: SettingService,
               private router: Router) {
   }
 
@@ -40,13 +40,15 @@ export class PrepareLaunchComponent implements OnInit {
               console.log(param);
               console.log('loading parameter ' + component.parameterList[index]);
               component.us.setParameter(String(component.parameterList[index]), param);
+              component.ss.setSetting(String(component.parameterList[index]), param);
+
             });
           },
           error => {
             console.log(error);
           },
           () => {
-            this.router.navigate(['login-page']);
+            this.router.navigate(['user-login']);
           }
         );
       });

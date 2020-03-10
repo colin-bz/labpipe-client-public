@@ -1,6 +1,6 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {UserSettingsService} from '../../../services/user-settings.service';
-import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {ShareDataService} from '../../../services/share-data.service';
 import {Operator} from '../../../models/parameter.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LabPipeService} from '../../../services/lab-pipe.service';
@@ -19,7 +19,7 @@ export class ProfilePortalComponent implements OnInit {
   @ViewChild('changePasswordModalContent', {static: false}) public changePasswordModalContent: TemplateRef<any>;
 
   constructor(private uss: UserSettingsService,
-              private tds: TemporaryDataService,
+              private tds: ShareDataService,
               private lps: LabPipeService,
               private nzModal: NzModalService,
               private nzNotification: NzNotificationService,
@@ -29,10 +29,10 @@ export class ProfilePortalComponent implements OnInit {
       newPassword: ['', Validators.required],
       confirm: ['', Validators.required]
     });
+    this.tds.operator.subscribe(value => this.operator = value);
   }
 
   ngOnInit() {
-    this.operator = this.tds.operator;
   }
 
   showChangePasswordModal() {
@@ -58,7 +58,7 @@ export class ProfilePortalComponent implements OnInit {
       this.nzNotification.error('Error', 'Your new password does not match.');
     } else {
       this.lps.updatePassword(this.changePasswordForm.get('confirm').value).subscribe((data: any) => {
-          this.tds.password = this.changePasswordForm.get('confirm').value;
+          this.tds.password.next(this.changePasswordForm.get('confirm').value);
           this.nzNotification.success('Success', data.message);
         },
         (error: any) => {

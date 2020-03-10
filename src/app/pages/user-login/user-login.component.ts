@@ -3,17 +3,17 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserSettingsService} from '../../services/user-settings.service';
 import {ElectronService} from 'ngx-electron';
-import {TemporaryDataService} from '../../services/temporary-data.service';
+import {ShareDataService} from '../../services/share-data.service';
 import {NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 
 
 @Component({
   selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css']
+  templateUrl: './user-login.component.html',
+  styleUrls: ['./user-login.component.css']
 })
 
-export class LoginPageComponent implements OnInit {
+export class UserLoginComponent implements OnInit {
   locations$: any[];
   instruments$: any[];
   operators$: any[];
@@ -32,7 +32,7 @@ export class LoginPageComponent implements OnInit {
               private nzModal: NzModalService,
               private us: UserSettingsService,
               private es: ElectronService,
-              private tds: TemporaryDataService) {
+              private tds: ShareDataService) {
     this.selectedLocation = this.us.getLocation();
     this.selectedInstrument = this.us.getInstrument();
     this.loginForm = this.formBuilder.group({
@@ -96,12 +96,12 @@ export class LoginPageComponent implements OnInit {
   onConfirm(status: boolean) {
     this.confirmLoginModal.destroy();
     if (status) {
-      this.tds.location = this.loginForm.get('location').value;
+      this.tds.location.next(this.loginForm.get('location').value);
       this.us.setLocation(this.loginForm.get('location').value);
-      this.tds.instrument = this.loginForm.get('instrument').value;
+      this.tds.instrument.next(this.loginForm.get('instrument').value);
       this.us.setInstrument(this.loginForm.get('instrument').value);
-      this.tds.operator = this.currentOperator;
-      this.tds.password = this.loginForm.get('password').value;
+      this.tds.operator.next(this.currentOperator);
+      this.tds.password.next(this.loginForm.get('password').value);
       this.router.navigate(['tasks']);
     }
   }

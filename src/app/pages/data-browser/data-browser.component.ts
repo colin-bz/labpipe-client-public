@@ -1,15 +1,15 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {LabPipeService} from '../../../services/lab-pipe.service';
-import {DatabaseService} from '../../../services/database.service';
+import {LabPipeService} from '../../services/lab-pipe.service';
+import {DatabaseService} from '../../services/database.service';
 import {NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import * as _ from 'lodash';
 
 @Component({
   selector: 'app-browse-portal',
-  templateUrl: './browse-portal.component.html',
-  styleUrls: ['./browse-portal.component.css']
+  templateUrl: './data-browser.component.html',
+  styleUrls: ['./data-browser.component.css']
 })
-export class BrowsePortalComponent implements OnInit {
+export class DataBrowserComponent implements OnInit {
   mapOfExpandRemoteData: { [key: string]: boolean } = {};
   mapOfExpandLocalData: { [key: string]: boolean } = {};
 

@@ -35,6 +35,7 @@ export class FreshStartupComponent implements OnInit {
       nzTitle: 'LabPipe requires restart',
       nzContent: 'For your settings to take effect, LabPipe will restart itself now.',
       nzOnOk: () => {
+        this.isRegularStartup = true;
         this.us.setStartupMode(this.isRegularStartup);
         this.restart();
       }

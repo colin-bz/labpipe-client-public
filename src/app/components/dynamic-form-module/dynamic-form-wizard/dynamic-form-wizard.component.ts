@@ -15,7 +15,7 @@ import {SelectQuestion} from '../../../models/dynamic-form-models/question-selec
 import {TrueFalseQuestion} from '../../../models/dynamic-form-models/question-truefalse';
 import {FileQuestion} from '../../../models/dynamic-form-models/question-file';
 import {LabPipeService} from '../../../services/lab-pipe.service';
-import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {ShareDataService} from '../../../services/share-data.service';
 import {NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import * as _ from 'lodash';
 
@@ -29,6 +29,8 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   location: any;
   instrument: any;
   study: any;
+  operator: any;
+  connected: boolean;
 
   currentStep = 0;
 
@@ -58,16 +60,18 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
               private ds: DatabaseService,
               private es: ElectronService,
               private lps: LabPipeService,
-              private tds: TemporaryDataService,
+              private tds: ShareDataService,
               private nzNotification: NzNotificationService,
               private zone: NgZone,
               private nzModal: NzModalService,
               private http: HttpClient,
               private router: Router) {
     this.formTemplates = [];
-    this.location = this.tds.location;
-    this.instrument = this.tds.instrument;
-    this.study = this.tds.study;
+    this.tds.location.subscribe(value => this.location = value);
+    this.tds.instrument.subscribe(value => this.instrument = value);
+    this.tds.study.subscribe(value => this.study = value);
+    this.tds.operator.subscribe(value => this.operator = value);
+    this.tds.connected.subscribe(value => this.connected = value);
   }
 
   ngOnInit() {
@@ -254,12 +258,12 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   saveResult() {
     const record = {
       created: new Date(),
-      saved_by: this.tds.operator.username,
+      saved_by: this.operator.username,
       url: this.remoteUrl,
       ...this.result
     };
     this.ds.saveData(this.actionIdentifier, record);
-    if (this.tds.connected) {
+    if (this.connected) {
       this.sentToServer = true;
       this.lps.postRecord(this.remoteUrl, record)
         .subscribe((data: any) => {

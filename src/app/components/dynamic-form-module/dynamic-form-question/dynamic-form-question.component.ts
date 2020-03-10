@@ -5,7 +5,7 @@ import {UserSettingsService} from '../../../services/user-settings.service';
 import {SelectQuestion} from '../../../models/dynamic-form-models/question-select';
 import {InputQuestion} from '../../../models/dynamic-form-models/question-input';
 import {FileQuestion} from '../../../models/dynamic-form-models/question-file';
-import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {ShareDataService} from '../../../services/share-data.service';
 import {UploadFile} from 'ng-zorro-antd';
 import * as moment from 'moment';
 
@@ -26,8 +26,12 @@ export class DynamicFormQuestionComponent implements OnInit {
   fileList: UploadFile[] = [];
   fileMultipleSelection: boolean;
 
+  study: any;
+
   constructor(private uss: UserSettingsService,
-              private tds: TemporaryDataService) {}
+              private tds: ShareDataService) {
+    this.tds.study.subscribe(value => this.study = value);
+  }
 
   ngOnInit() {
     this.prepareAttributes();
@@ -42,7 +46,7 @@ export class DynamicFormQuestionComponent implements OnInit {
         const sq = this.qBase as SelectQuestion;
         if (sq.options.startsWith('__') && sq.options.endsWith('__')) {
           const optionIndex = sq.options.replace(/__/g, '').split('::');
-          let optionValues = this.tds.study;
+          let optionValues = this.study;
           optionIndex.forEach((oi: string) => {
             optionValues = optionValues[oi];
           });

@@ -15,7 +15,7 @@ import {ConnectionMonitorComponent} from './components/connection-monitor/connec
 import {TaskPortalComponent} from './components/portal-module/task-portal/task-portal.component';
 import {TopNavigationComponent} from './components/navigation-sidebar-left/top-navigation.component';
 import {ElectronService} from 'ngx-electron';
-import {LoginPageComponent} from './components/login-page/login-page.component';
+import {UserLoginComponent} from './pages/user-login/user-login.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -23,12 +23,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ClarityModule, ClrIconModule} from '@clr/angular';
 import {StorageModule} from '@ngx-pwa/local-storage';
 import { ManagePortalComponent } from './components/portal-module/manage-portal/manage-portal.component';
-import { BrowsePortalComponent } from './components/portal-module/browse-portal/browse-portal.component';
+import { DataBrowserComponent } from './pages/data-browser/data-browser.component';
 import { ProfilePortalComponent } from './components/portal-module/profile-portal/profile-portal.component';
 import { NgZorroAntdModule, NZ_I18N, en_GB } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { EmailGroupManagerComponent } from './components/server-manager/email-group-manager/email-group-manager.component';
+import { NoAccessComponent } from './pages/no-access/no-access.component';
 
 registerLocaleData(en);
 
@@ -47,11 +48,12 @@ registerLocaleData(en);
     ConnectionMonitorComponent,
     TaskPortalComponent,
     TopNavigationComponent,
-    LoginPageComponent,
+    UserLoginComponent,
     ManagePortalComponent,
-    BrowsePortalComponent,
+    DataBrowserComponent,
     ProfilePortalComponent,
-    EmailGroupManagerComponent
+    EmailGroupManagerComponent,
+    NoAccessComponent
   ],
   imports: [
     BrowserModule,

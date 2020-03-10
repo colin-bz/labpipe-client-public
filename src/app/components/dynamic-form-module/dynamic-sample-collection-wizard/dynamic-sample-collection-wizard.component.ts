@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserSettingsService} from '../../../services/user-settings.service';
-import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {ShareDataService} from '../../../services/share-data.service';
 
 @Component({
     selector: 'app-dynamic-sample-collection-wizard',
@@ -16,16 +16,16 @@ export class DynamicSampleCollectionWizardComponent implements OnInit {
     currentInstrument: any;
 
     constructor(private us: UserSettingsService,
-                private tds: TemporaryDataService,
+                private tds: ShareDataService,
                 private formBuilder: FormBuilder, private router: Router) {
         this.studyForm = this.formBuilder.group({
             study: ['', Validators.required]
         });
+        this.tds.location.subscribe(value => this.currentLocation = value);
+        this.tds.instrument.subscribe(value => this.currentInstrument = value);
     }
 
     ngOnInit() {
-        this.currentLocation = this.tds.location;
-        this.currentInstrument = this.tds.instrument;
         this.projects$ = this.us.getStudies()
         .filter(p => p.config.location
             .includes(this.currentLocation.identifier) && p.config.instrument.includes(this.currentInstrument.identifier));
@@ -33,7 +33,7 @@ export class DynamicSampleCollectionWizardComponent implements OnInit {
 
     showDataCollectionForm() {
         if (this.studyForm.valid) {
-            this.tds.study = this.studyForm.get('study').value;
+            this.tds.study.next(this.studyForm.get('study').value);
             this.router.navigate(['dynamic-form-wizard']);
         }
     }

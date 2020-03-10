@@ -12,6 +12,10 @@
   min-height: 100vh;
 }
 
+.fullwidth {
+  width: 100%;
+}
+
 .safe-margin {
   margin: 34px;
 }

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserSettingsService} from '../../../services/user-settings.service';
 import {ElectronService} from 'ngx-electron';
 import {FormBuilder} from '@angular/forms';
-import {TemporaryDataService} from '../../../services/temporary-data.service';
+import {ShareDataService} from '../../../services/share-data.service';
 
 @Component({
   selector: 'app-task-portal',
@@ -17,10 +17,10 @@ export class TaskPortalComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private es: ElectronService,
               private uss: UserSettingsService,
-              private tds: TemporaryDataService) {
-    this.operator = this.tds.operator;
-    this.location = this.tds.location;
-    this.instrument = this.tds.instrument;
+              private tds: ShareDataService) {
+    this.tds.operator.subscribe(value => this.operator = value);
+    this.tds.location.subscribe(value => this.location = value);
+    this.tds.instrument.subscribe(value => this.instrument = value);
   }
 
   ngOnInit() {

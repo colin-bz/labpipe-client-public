@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {UserSettingsService} from './user-settings.service';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {ElectronService} from 'ngx-electron';
-import {TemporaryDataService} from './temporary-data.service';
+import {ShareDataService} from './share-data.service';
 import {EmailGroup, Instrument, Location, Operator, Role, Study} from '../models/parameter.model';
 
 @Injectable({
@@ -14,14 +14,19 @@ export class LabPipeService {
   path: any;
   fs: any;
 
+  operator: any;
+  password: string;
+
   constructor(private uss: UserSettingsService,
-              private tds: TemporaryDataService,
+              private tds: ShareDataService,
               private es: ElectronService,
               private http: HttpClient) {
     this.path = this.es.remote.require('path');
     this.fs = this.es.remote.require('fs-extra');
     this.loadApiRoot();
     this.uuid4 = this.es.remote.require('uuid/v4');
+    this.tds.operator.subscribe(value => this.operator = value);
+    this.tds.password.subscribe(value => this.password = value);
   }
 
   loadApiRoot() {
@@ -29,9 +34,9 @@ export class LabPipeService {
   }
 
   userAuthRequestOptions() {
-    return this.tds.operator && this.tds.password ? {
+    return this.operator && this.password ? {
       headers: new HttpHeaders({
-        Authorization: `Basic ${btoa(`${this.tds.operator.username}:${this.tds.password}`)}`
+        Authorization: `Basic ${btoa(`${this.operator.username}:${this.password}`)}`
       })
     } : {};
   }
