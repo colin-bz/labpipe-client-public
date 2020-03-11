@@ -1,0 +1,34 @@
+<nz-table *ngIf="emailGroup && operators"
+          [nzLoading]="!tableReady"
+          #operatorTable
+          nzShowPagination
+          nzShowSizeChanger
+          [nzData]="operators"
+          [nzFooter]="footer"
+>
+  <thead>
+  <tr>
+    <th>Admin</th>
+    <th>Member</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Username</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let operator of operatorTable.data">
+    <td nzShowCheckbox
+      [(nzChecked)]="adminId[operator.username]">
+    </td>
+    <td nzShowCheckbox
+      [(nzChecked)]="memberId[operator.username]">
+    </td>
+    <td>{{ operator.name }}</td>
+    <td>{{ operator.email }}</td>
+    <td>{{ operator.username }}</td>
+  </tr>
+  </tbody>
+</nz-table>
+<ng-template #footer>
+  <button nz-button nzType="primary" (click)="update()">Update</button>
+</ng-template>

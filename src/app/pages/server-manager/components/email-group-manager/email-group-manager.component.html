@@ -1,0 +1,17 @@
+<nz-row nzType="flex" nzGutter="8" nzJustify="start">
+    <nz-spin [nzSpinning]="loadingOptions" nz-col nzSpan="24">
+      <form nz-form nzLayout="vertical">
+        <nz-form-item>
+          <nz-form-label>
+            <h3>Manage email group</h3>
+          </nz-form-label>
+          <nz-form-control>
+            <nz-select nzShowSearch nzAllowClear [(ngModel)]="selected" [ngModelOptions]="{standalone: true}" required>
+              <nz-option *ngFor="let o of options" nzLabel="{{o.name}}" [nzValue]="o"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      <app-email-group-table [emailGroup]="selected"></app-email-group-table>
+      </form>
+    </nz-spin>
+</nz-row>

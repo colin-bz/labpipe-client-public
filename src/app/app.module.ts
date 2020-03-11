@@ -22,14 +22,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ClarityModule, ClrIconModule} from '@clr/angular';
 import {StorageModule} from '@ngx-pwa/local-storage';
-import { ManagePortalComponent } from './components/portal-module/manage-portal/manage-portal.component';
+import { ServerManagerComponent } from './pages/server-manager/server-manager.component';
 import { DataBrowserComponent } from './pages/data-browser/data-browser.component';
 import { ProfilePortalComponent } from './components/portal-module/profile-portal/profile-portal.component';
 import { NgZorroAntdModule, NZ_I18N, en_GB } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { EmailGroupManagerComponent } from './components/server-manager/email-group-manager/email-group-manager.component';
+import { EmailGroupTableComponent } from './pages/server-manager/components/email-group-table/email-group-table.component';
 import { NoAccessComponent } from './pages/no-access/no-access.component';
+import { EmailGroupManagerComponent } from './pages/server-manager/components/email-group-manager/email-group-manager.component';
 
 registerLocaleData(en);
 
@@ -49,11 +50,12 @@ registerLocaleData(en);
     TaskPortalComponent,
     TopNavigationComponent,
     UserLoginComponent,
-    ManagePortalComponent,
+    ServerManagerComponent,
     DataBrowserComponent,
     ProfilePortalComponent,
-    EmailGroupManagerComponent,
-    NoAccessComponent
+    EmailGroupTableComponent,
+    NoAccessComponent,
+    EmailGroupManagerComponent
   ],
   imports: [
     BrowserModule,

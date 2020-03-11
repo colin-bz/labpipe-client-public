@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ManagePortalComponent} from './manage-portal.component';
+import {ServerManagerComponent} from './server-manager.component';
 
 describe('ManagePortalComponent', () => {
-  let component: ManagePortalComponent;
-  let fixture: ComponentFixture<ManagePortalComponent>;
+  let component: ServerManagerComponent;
+  let fixture: ComponentFixture<ServerManagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManagePortalComponent ]
+      declarations: [ ServerManagerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManagePortalComponent);
+    fixture = TestBed.createComponent(ServerManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

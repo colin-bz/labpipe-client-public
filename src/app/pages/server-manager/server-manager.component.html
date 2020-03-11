@@ -37,26 +37,13 @@
         </div>
       </div>
     </nz-card>
-    <nz-row nzType="flex" nzJustify="start" nzGutter="8">
-      <form nz-form nzLayout="vertical">
-        <nz-form-item>
-          <nz-form-control>
-            <button nz-button [nzLoading]="loadingEmailGroup" (click)="manageCurrentEmailGroup()">Email Group</button>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-label><strong>Location</strong></nz-form-label>
-          <nz-form-control>
-            <nz-select nzShowSearch nzAllowClear [(ngModel)]="s">
-              <nz-option *ngFor="let l of locations$" nzLabel="{{l.name}}" [nzValue]="l"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
-    </nz-row>
-    <nz-row nzType="flex" nzJustify="start" nzGutter="8">
-      <app-email-group-manager></app-email-group-manager>
-    </nz-row>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader="Email Group"
+      >
+        <app-email-group-manager></app-email-group-manager>
+      </nz-collapse-panel>
+    </nz-collapse>
   </nz-tab>
   <nz-tab nzTitle="Form & Report">
     <nz-card nzTitle="Add">

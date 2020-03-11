@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LabPipeService} from '../../../services/lab-pipe.service';
-import {CollectionName, EmailGroup, FormTemplate, Operator, Role, Study} from '../../../models/parameter.model';
+import {LabPipeService} from '../../services/lab-pipe.service';
+import {CollectionName, EmailGroup, FormTemplate, Operator, Role, Study} from '../../models/parameter.model';
 import {NzNotificationService} from 'ng-zorro-antd';
-import {ShareDataService} from '../../../services/share-data.service';
+import {ShareDataService} from '../../services/share-data.service';
 
 @Component({
   selector: 'app-manage-portal',
-  templateUrl: './manage-portal.component.html',
-  styleUrls: ['./manage-portal.component.css']
+  templateUrl: './server-manager.component.html',
+  styleUrls: ['./server-manager.component.css']
 })
-export class ManagePortalComponent implements OnInit {
+export class ServerManagerComponent implements OnInit {
 
   connected: boolean;
 

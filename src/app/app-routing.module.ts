@@ -6,7 +6,7 @@ import {PrepareLaunchComponent} from './components/startup-module/prepare-launch
 import {TaskPortalComponent} from './components/portal-module/task-portal/task-portal.component';
 import {UserLoginComponent} from './pages/user-login/user-login.component';
 import {DynamicFormWizardComponent} from './components/dynamic-form-module/dynamic-form-wizard/dynamic-form-wizard.component';
-import {ManagePortalComponent} from './components/portal-module/manage-portal/manage-portal.component';
+import {ServerManagerComponent} from './pages/server-manager/server-manager.component';
 import {DataBrowserComponent} from './pages/data-browser/data-browser.component';
 import {AuthGuardService} from './services/auth-guard.service';
 import {ProfilePortalComponent} from './components/portal-module/profile-portal/profile-portal.component';
@@ -21,7 +21,7 @@ const routes: Routes = [
   {path: 'user-login', component: UserLoginComponent},
   {path: 'tasks', component: TaskPortalComponent, canActivate: [AuthGuardService]},
   {path: 'browse', component: DataBrowserComponent, canActivate: [AuthGuardService]},
-  {path: 'manage', component: ManagePortalComponent, canActivate: [AuthGuardService, AdminGuardService]},
+  {path: 'manage', component: ServerManagerComponent, canActivate: [AuthGuardService, AdminGuardService]},
   {path: 'profile', component: ProfilePortalComponent, canActivate: [AuthGuardService]},
   {path: 'dynamic-form-wizard', component: DynamicFormWizardComponent, canActivate: [AuthGuardService]},
   {path: 'error/no-access', component: NoAccessComponent},
