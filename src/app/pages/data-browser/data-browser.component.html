@@ -16,7 +16,7 @@
       <tbody>
       <ng-template ngFor let-data [ngForOf]="remoteTable.data">
         <tr>
-          <td nzShowExpand [(nzExpand)]="mapOfExpandRemoteData[data.id]"></td>
+          <td nzShowExpand [(nzExpand)]="mapOfExpandRemoteData[data.actionIdentifier]"></td>
           <td>{{data.studyIdentifier}}</td>
           <td>{{data.instrumentIdentifier}}</td>
           <td>{{data.formIdentifier}}</td>
@@ -26,7 +26,7 @@
             <button nz-button nzType="dashed" (click)="showRemoteReportModal(data, reportContent, reportFooter)">Preview</button>
           </td>
         </tr>
-        <tr [nzExpand]="mapOfExpandRemoteData[data.id]">
+        <tr [nzExpand]="mapOfExpandRemoteData[data.actionIdentifier]">
           <td></td>
           <td colspan="6">
             {{data | json}}
@@ -56,7 +56,7 @@
       <tbody>
       <ng-template ngFor let-data [ngForOf]="localTable.data">
         <tr>
-          <td nzShowExpand [(nzExpand)]="mapOfExpandLocalData[data.id]"></td>
+          <td nzShowExpand [(nzExpand)]="mapOfExpandLocalData[data._id]"></td>
           <td>{{data.data.studyIdentifier}}</td>
           <td>{{data.data.instrumentIdentifier}}</td>
           <td>{{data.data.formIdentifier}}</td>
@@ -66,7 +66,7 @@
             <button nz-button nzType="dashed" (click)="upload(data)">Upload</button>
           </td>
         </tr>
-        <tr [nzExpand]="mapOfExpandLocalData[data.id]">
+        <tr [nzExpand]="mapOfExpandLocalData[data._id]">
           <td></td>
           <td colspan="6">
             {{data | json}}
