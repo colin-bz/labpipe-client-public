@@ -43,9 +43,9 @@ export class DynamicFormWizardComponent implements OnInit, OnDestroy {
   isFormVisible: boolean;
   result: any;
   formData: any;
-  @ViewChild('formDataPreview', {static: false}) formDataPreview: DynamicFormResultPreviewComponent;
-  @ViewChild('multiFormModalContent', {static: false}) public multiFormModalContent: TemplateRef<any>;
-  @ViewChild('saveModalContent', {static: false}) public saveModalContent: TemplateRef<any>;
+  @ViewChild('formDataPreview') formDataPreview: DynamicFormResultPreviewComponent;
+  @ViewChild('multiFormModalContent') public multiFormModalContent: TemplateRef<any>;
+  @ViewChild('saveModalContent') public saveModalContent: TemplateRef<any>;
 
   noFormModal: NzModalRef;
   multiFormModal: NzModalRef;

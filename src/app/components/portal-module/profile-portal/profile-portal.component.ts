@@ -16,7 +16,7 @@ export class ProfilePortalComponent implements OnInit {
 
   changePasswordForm: FormGroup;
   changePasswordModal: NzModalRef;
-  @ViewChild('changePasswordModalContent', {static: false}) public changePasswordModalContent: TemplateRef<any>;
+  @ViewChild('changePasswordModalContent') public changePasswordModalContent: TemplateRef<any>;
 
   constructor(private uss: UserSettingsService,
               private tds: ShareDataService,

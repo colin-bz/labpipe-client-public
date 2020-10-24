@@ -14,7 +14,7 @@ export class SettingPortalComponent implements OnInit {
   appCachePath: string;
 
   clearCacheModal: NzModalRef;
-  @ViewChild('clearCacheModalContent', {static: false}) public clearCacheModalContent: TemplateRef<any>;
+  @ViewChild('clearCacheModalContent') public clearCacheModalContent: TemplateRef<any>;
 
   constructor(private us: UserSettingsService,
               private nzModal: NzModalService,
